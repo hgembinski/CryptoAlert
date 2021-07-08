@@ -1,6 +1,6 @@
 # Haiden Gembinski
 # CryptoAlert
-# Allows for real-time tracking of a selected cryptocurrency's price
+# Allows for real-time tracking of a selected cryptocurrency's USD price
 # as well as configurable sound/email alrts once the price hits a custom threshold.
 # Crypto choice, price alert threshold, and alert options can all be found under "settings".
 
@@ -27,7 +27,7 @@ def crypto_alert():
     cryptoname = Label(root, text = "No Coin Selected", bg = "azure", fg = "#002590",
                 font = (None, 35, "bold")).place(x = 350, y = 125, anchor = "center")
     priceframe = Frame(root, bg = 'grey7', highlightbackground = "#002590", highlightcolor = "#002590",
-                highlightthickness = 15, relief = "flat", height = 200, width = 410).place(x = 350, y = 300, anchor = "center")
+                highlightthickness = 12.5, relief = "flat", height = 200, width = 410).place(x = 350, y = 300, anchor = "center")
     price = Label(priceframe, text = "$0.0000", bg = "grey7",fg = "lime green", font = (None, 75)).place(x = 350, y = 300, anchor = "center")
 
     #buttons
