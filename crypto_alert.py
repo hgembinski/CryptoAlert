@@ -12,7 +12,7 @@ import pandas
 import json
 import time
 
-#main function / GUI
+#main function / main page of GUI
 def crypto_alert():
     #initial GUI setup
     root = tkinter.Tk()
@@ -24,11 +24,11 @@ def crypto_alert():
     #text elements
     title = Label(root, text = "CryptoAlert", bg = '#000F46', fg = "white", width = 12,
                 font = (None, 40)).place(x = 350, y = 50, anchor = "s")
-    cryptoname = Label(root, text = "No Coin Selected", bg = "azure", fg = "#002590",
+    cryptoname = Label(root, text = "No Coin Selected", bg = "azure", fg = "#000F46",
                 font = (None, 35, "bold")).place(x = 350, y = 125, anchor = "center")
-    priceframe = Frame(root, bg = 'grey7', highlightbackground = "#002590", highlightcolor = "#002590",
+    priceframe = Frame(root, bg = 'grey9', highlightbackground = "#000F46", highlightcolor = "#000F46",
                 highlightthickness = 12.5, relief = "flat", height = 200, width = 410).place(x = 350, y = 300, anchor = "center")
-    price = Label(priceframe, text = "$0.0000", bg = "grey7",fg = "lime green", font = (None, 75)).place(x = 350, y = 300, anchor = "center")
+    price = Label(priceframe, text = "$0.0000", bg = "grey9",fg = "lime green", font = (None, 75)).place(x = 350, y = 300, anchor = "center")
 
     #buttons
     settings = Button(root, bg = "#0042FF", activebackground = "dodgerblue2", fg = "antiquewhite1", activeforeground = "antiquewhite1",
