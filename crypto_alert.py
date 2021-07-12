@@ -26,6 +26,8 @@ def crypto_alert():
                 font = (None, 40)).place(x = 350, y = 50, anchor = "s")
     cryptoname = Label(root, text = "No Coin Selected", bg = "azure", fg = "#000F46",
                 font = (None, 35, "bold")).place(x = 350, y = 125, anchor = "center")
+
+    #price ticker
     priceframe = Frame(root, bg = 'grey9', highlightbackground = "#000F46", highlightcolor = "#000F46",
                 highlightthickness = 12.5, relief = "flat", height = 200, width = 410).place(x = 350, y = 300, anchor = "center")
     price = Label(priceframe, text = "$0.0000", bg = "grey9",fg = "lime green", font = (None, 75)).place(x = 350, y = 300, anchor = "center")

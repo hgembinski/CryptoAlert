@@ -43,26 +43,27 @@ def settings_screen(root):
                 font = (None, 30, "italic")).place(x = 150, y = 160)
     alert_text_2 = Label(settings, text = "Changes by ", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 225)
-    price_changes_by = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 231)
+    price_changes_by = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 231) #'changes by' toggle
     alert_text_3 = Label(settings, text = "Is ", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 290)
-    price_is = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 296)
+    price_is = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 296) #'is' toggle
     
     alert_config_text = Label(settings, text = "Alert me by...", bg = "azure", fg = "#000F46",
                 font = (None, 30, "italic")).place(x = 150, y = 365)
     sound_alert_text = Label(settings, text = "Playing a sound!", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 425)
-    play_sound = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 431)
+    play_sound = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 431) #'play sound' toggle
     email_alert_text = Label(settings, text = "Sending me an email!", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 490)
     email = Entry(settings, font = (None, 22), relief = "sunken").place(x = 250, y = 530)
-    send_email = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 496)
+    send_email = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 496) #'send email' toggle
 
-    #buttons
+    #confirm button
     confirm = Button(settings, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
                 text = "Confirm", relief = "raised", width = 10, font = (None, 30, "bold"), command = lambda: settings_confirm(root, settings))
     confirm.place(x = 500, y = 650, anchor = "center")
 
+    #cancel button
     cancel = Button(settings, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
                 text = "Cancel", relief = "raised", width = 10, font = (None, 30, "bold"), command = lambda: settings_cancel(root, settings))
     cancel.place(x = 200, y = 650, anchor = "center")
