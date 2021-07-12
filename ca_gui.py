@@ -27,10 +27,10 @@ def settings_screen(root):
     #drop down list
     list_title = Label(settings, text = "Select Coin To Track ", bg = "azure", fg = "#000F46",
                 font = (None, 25)).place(x = 350, y = 75, anchor = "center")
-    cryptos = ["One", "Two", "Three", "Four", "Five"]
+    cryptos = ["Update to load list of coins!"]
     list_font = font.Font(None, 25)
     settings.option_add("*TCombobox*Listbox*Font", list_font)
-    cryptos = AutocompleteCombobox(settings, font = (None, 25), completevalues = cryptos)
+    cryptos = AutocompleteCombobox(settings, width = 22, font = (None, 22), completevalues = cryptos)
     cryptos.place(x = 350, y = 125, anchor = "center")
 
     #update button
@@ -39,14 +39,25 @@ def settings_screen(root):
     update.place(x = 600, y = 125, anchor = "center")
 
     #alert configuration
-    alert_text_1 = Label(settings, text = "When the price...", bg = "azure", fg = "#000F46",
+    alert_price_text = Label(settings, text = "When the price...", bg = "azure", fg = "#000F46",
                 font = (None, 30, "italic")).place(x = 150, y = 160)
-    alert_text_2 = Label(settings, text = "Changes by ", bg = "azure", fg = "#000F46",
-                font = (None, 22)).place(x = 250, y = 225)
+
     price_changes_by = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 231) #'changes by' toggle
-    alert_text_3 = Label(settings, text = "Is ", bg = "azure", fg = "#000F46",
-                font = (None, 22)).place(x = 250, y = 290)
+    changes_text = Label(settings, text = "Changes by ", bg = "azure", fg = "#000F46",
+                font = (None, 22)).place(x = 250, y = 225)
+    changes_percent = Label(settings, text = "%", bg = "azure", fg = "#000F46",
+                font = (None, 22)).place(x = 500, y = 225)
+    changes_number = Entry(settings, font = (None, 20), width = 4, relief = "sunken").place(x = 420, y = 227)
+    
     price_is = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 296) #'is' toggle
+    is_text = Label(settings, text = "Is ", bg = "azure", fg = "#000F46",
+                font = (None, 22)).place(x = 250, y = 292)
+    is_choices = ["=", "<", ">"]
+    is_choice_dropdown = AutocompleteCombobox(settings, width = 2, font = (None, 20), justify = "center",
+                completevalues = is_choices, state = "readonly" ).place(x = 300, y = 294)
+    is_sign = Label(settings, text = "$", bg = "azure", fg = "#000F46",
+                font = (None, 22)).place(x = 375, y = 292)
+    is_number = Entry(settings, font = (None, 20), width = 8, relief = "sunken").place(x = 400, y = 294)
     
     alert_config_text = Label(settings, text = "Alert me by...", bg = "azure", fg = "#000F46",
                 font = (None, 30, "italic")).place(x = 150, y = 365)
@@ -55,7 +66,9 @@ def settings_screen(root):
     play_sound = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 431) #'play sound' toggle
     email_alert_text = Label(settings, text = "Sending me an email!", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 490)
-    email = Entry(settings, font = (None, 22), relief = "sunken").place(x = 250, y = 530)
+    email = Entry(settings, font = (None, 20), relief = "sunken")
+    email.place(x = 250, y = 530)
+    email.insert(0, "example@website.org")
     send_email = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 496) #'send email' toggle
 
     #confirm button
