@@ -4,13 +4,13 @@
 # as well as configurable sound/email alrts once the price hits a custom threshold.
 # Crypto choice, price alert threshold, and alert options can all be found under "settings".
 
-import tkinter
-from tkinter import *
 from bs4 import BeautifulSoup
 import requests
 import pandas
 import json
 import time
+import ca_gui
+from ca_gui import *
 
 #main function / main page of GUI
 def crypto_alert():
@@ -32,7 +32,7 @@ def crypto_alert():
 
     #buttons
     settings = Button(root, bg = "#0042FF", activebackground = "dodgerblue2", fg = "antiquewhite1", activeforeground = "antiquewhite1",
-                text = "Settings", relief = "raised", width = 10, font = (None, 30, "bold"))
+                text = "Settings", relief = "raised", width = 10, font = (None, 30, "bold"), command = lambda: settings_screen(root))
     settings.place(x = 350, y = 495, anchor = "center")
 
     history = Button(root, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
