@@ -29,8 +29,9 @@ def crypto_alert():
 
     #price ticker
     priceframe = Frame(root, bg = 'grey9', highlightbackground = "#000F46", highlightcolor = "#000F46",
-                highlightthickness = 12.5, relief = "flat", height = 200, width = 410).place(x = 350, y = 300, anchor = "center")
-    price = Label(priceframe, text = "$0.0000", bg = "grey9",fg = "lime green", font = (None, 75)).place(x = 350, y = 300, anchor = "center")
+                highlightthickness = 12.5, relief = "flat", height = 200, width = 500).place(x = 350, y = 300, anchor = "center")
+    price = Label(priceframe, text = "$00000.00", bg = "grey9",fg = "antiquewhite1", width = 8,
+                font = (None, 75)).place(x = 350, y = 300, anchor = "center")
 
     #buttons
     settings = Button(root, bg = "#0042FF", activebackground = "dodgerblue2", fg = "antiquewhite1", activeforeground = "antiquewhite1",
