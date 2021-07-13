@@ -14,7 +14,7 @@ from ca_gui import *
 
 #main function / main page of GUI
 def crypto_alert():
-    #settings
+    #read the settings
     coin = "None"
     price = 0
     alert_type = "None"
@@ -59,7 +59,8 @@ def crypto_alert():
     settings.place(x = 500, y = 650, anchor = "center")
 
     history = Button(root, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
-                text = "History", relief = "raised", width = 10, font = (None, 30, "bold"))
+                text = "History", relief = "raised", width = 10, font = (None, 30, "bold"),
+                command = lambda: history_screen(root, coin, price, alert_type, alert_number, is_sound, is_email, email)) #TO-DO: TESTING FOR NOW
     history.place(x = 200, y = 650, anchor = "center")
 
 
