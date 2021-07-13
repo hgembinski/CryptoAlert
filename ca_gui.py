@@ -9,7 +9,7 @@ from ttkwidgets.autocomplete import AutocompleteCombobox
 
 
 #Settings screen display
-def settings_screen(root):
+def settings_screen(root, coin, price, alert_type, alert_number, is_sound, is_email, email):
     root.withdraw() #hide root
     settings = tkinter.Toplevel(root)
     settings.title("CryptoAlert Settings")
@@ -48,7 +48,7 @@ def settings_screen(root):
                 font = (None, 22)).place(x = 490, y = 225)
     changes_number = Entry(settings, font = (None, 20), width = 4, relief = "sunken")
     changes_number.place(x = 425, y = 227)
-    changes_number.insert(0, "100")
+    changes_number.insert(0, "10")
     
     is_text = Label(settings, text = "Is ", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 292)
