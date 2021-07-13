@@ -46,7 +46,9 @@ def settings_screen(root):
                 font = (None, 22)).place(x = 250, y = 225)
     changes_percent = Label(settings, text = "%", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 490, y = 225)
-    changes_number = Entry(settings, font = (None, 20), width = 4, relief = "sunken").place(x = 425, y = 227)
+    changes_number = Entry(settings, font = (None, 20), width = 4, relief = "sunken")
+    changes_number.place(x = 425, y = 227)
+    changes_number.insert(0, "100")
     
     is_text = Label(settings, text = "Is ", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 292)
@@ -83,8 +85,8 @@ def settings_screen(root):
 
     #toggles
     #price 'changes by' toggle
-    price_changes_by = Canvas(settings, bg = "light grey", borderwidth = 0, 
-                highlightthickness = 5, highlightbackground = "light grey", width = 25, height = 25)
+    price_changes_by = Canvas(settings, bg = "#000F46", borderwidth = 0, 
+                highlightthickness = 5, highlightbackground = "light grey", width = 25, height = 25) #default on display
     price_changes_by.place(x = 200, y = 225)
 
     #price 'is' toggle
