@@ -33,14 +33,24 @@ def crypto_alert():
     price = Label(priceframe, text = "$00000.00", bg = "grey9",fg = "antiquewhite1", width = 8,
                 font = (None, 75)).place(x = 350, y = 300, anchor = "center")
 
+    #alert display
+    alert_display = Label(root, text = "No Alert Set!", bg = "azure", fg = "#000F46",
+                font = (None, 25)).place(x = 350, y = 430, anchor = "center")
+    sound_display = Label(root, text = "I will not play a sound!", bg = "azure", fg = "#000F46",
+                font = (None, 25)).place(x = 350, y = 480, anchor = "center")
+    email_display = Label(root, text = "I will not send an email!", bg = "azure", fg = "#000F46",
+                font = (None, 25)).place(x = 350, y = 530, anchor = "center")
+    email_address_display = Label(root, text = "", bg = "azure", fg = "#000F46",
+                font = (None, 20)).place(x = 350, y = 570, anchor = "center")
+
     #buttons
     settings = Button(root, bg = "#0042FF", activebackground = "dodgerblue2", fg = "antiquewhite1", activeforeground = "antiquewhite1",
                 text = "Settings", relief = "raised", width = 10, font = (None, 30, "bold"), command = lambda: settings_screen(root))
-    settings.place(x = 350, y = 495, anchor = "center")
+    settings.place(x = 200, y = 650, anchor = "center")
 
     history = Button(root, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
                 text = "History", relief = "raised", width = 10, font = (None, 30, "bold"))
-    history.place(x = 350, y = 620, anchor = "center")
+    history.place(x = 500, y = 650, anchor = "center")
 
 
 
