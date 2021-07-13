@@ -42,15 +42,12 @@ def settings_screen(root):
     #alert configuration
     alert_price_text = Label(settings, text = "When the price...", bg = "azure", fg = "#000F46",
                 font = (None, 30, "italic")).place(x = 150, y = 160)
-
-    price_changes_by = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 231) #'changes by' toggle
     changes_text = Label(settings, text = "Changes by ", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 225)
     changes_percent = Label(settings, text = "%", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 490, y = 225)
     changes_number = Entry(settings, font = (None, 20), width = 4, relief = "sunken").place(x = 425, y = 227)
     
-    price_is = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 296) #'is' toggle
     is_text = Label(settings, text = "Is ", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 292)
     is_choices = ["=", "<", ">"]
@@ -77,13 +74,64 @@ def settings_screen(root):
                 font = (None, 30, "italic")).place(x = 150, y = 365)
     sound_alert_text = Label(settings, text = "Playing a sound!", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 425)
-    play_sound = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 431) #'play sound' toggle
     email_alert_text = Label(settings, text = "Sending me an email!", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 490)
     email = Entry(settings, font = (None, 20), relief = "sunken")
     email.place(x = 250, y = 530)
     email.insert(0, "example@website.org")
-    send_email = Canvas(settings, bg = "light grey", width = 25, height = 25).place(x = 200, y = 496) #'send email' toggle
+
+
+    #toggles
+    #price 'changes by' toggle
+    price_changes_by = Canvas(settings, bg = "light grey", borderwidth = 0, 
+                highlightthickness = 5, highlightbackground = "light grey", width = 25, height = 25)
+    price_changes_by.place(x = 200, y = 225)
+
+    #price 'is' toggle
+    price_is = Canvas(settings, bg = "light grey", borderwidth = 0, 
+                highlightthickness = 5, highlightbackground = "light grey", width = 25, height = 25)
+    price_is.place(x = 200, y = 292)
+
+    #alert 'play sound' toggle
+    play_sound = Canvas(settings, bg = "light grey", borderwidth = 0, 
+                highlightthickness = 5, highlightbackground = "light grey", width = 25, height = 25)
+    play_sound.place(x = 200, y = 425)
+
+    #'send email' toggle
+    send_email = Canvas(settings, bg = "light grey", borderwidth = 0, 
+                highlightthickness = 5, highlightbackground = "light grey", width = 25, height = 25)
+    send_email.place(x = 200, y = 490)
+
+    #toggle events
+    def changes_by_toggle(event):
+        if price_changes_by["background"] == "light grey":
+            price_changes_by.config(bg = "#000F46")
+            price_is.config(bg = "light grey")
+        else:
+            price_changes_by.config(bg = "light grey")
+    price_changes_by.bind("<Button-1>", changes_by_toggle)
+
+    def is_toggle(event):
+        if price_is["background"] == "light grey":
+            price_is.config(bg = "#000F46")
+            price_changes_by.config(bg = "light grey")
+        else:
+            price_is.config(bg = "light grey")
+    price_is.bind("<Button-1>", is_toggle)
+
+    def sound_alert_toggle(event):
+        if play_sound["background"] == "light grey":
+            play_sound.config(bg = "#000F46")
+        else:
+            play_sound.config(bg = "light grey")
+    play_sound.bind("<Button-1>", sound_alert_toggle)
+
+    def email_alert_toggle(event):
+        if send_email["background"] == "light grey":
+            send_email.config(bg = "#000F46")
+        else:
+            send_email.config(bg = "light grey")
+    send_email.bind("<Button-1>", email_alert_toggle)
 
     #confirm button
     confirm = Button(settings, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
