@@ -2,6 +2,7 @@
 #Helper functions for crypto alert
 #(Mostly for handling files and input verification)
 
+import re
 from os import path
 import pandas as pd
 
@@ -15,11 +16,11 @@ def csv_to_dict(file):
     
     return dict
 
-#check validity of coin input -> if it exists in the dictionary of coins
-def check_coin(coin, dict):
-    coin_name = coin.split(" ", 1) #get the spelled-out coin name from the string
-    
-    if coin_name in dict and coin_name != "Update to load list of coins!":
+#check validity of email
+def check_email(email):
+    regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
+
+    if (re.match(regex, email)):
         return True
-    else:
-        return False
+
+    return False
