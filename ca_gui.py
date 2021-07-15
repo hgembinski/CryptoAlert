@@ -6,10 +6,48 @@ from tkinter import *
 from tkinter import font
 from tkinter import ttk
 from ttkwidgets.autocomplete import AutocompleteCombobox
-
+import ca_helpers
+from ca_helpers import *
 
 #Settings screen display
-def settings_screen(root, coin, initial_price, alert_type, alert_number, is_sound, is_email, email):
+def settings_screen(root):
+    settings_file = "settings.txt"
+    csv_file = "cryptos.csv"
+
+    #attempt to construct dictionary from file
+    coin_dict = csv_to_dict(csv_file)
+    coin_list = []
+    for key in coin_dict.keys():
+        coin_list.append(coin_dict[key][0] + " - " + key)
+
+    #load settings if they exist already
+    if path.exists(settings_file) and path.isfile(settings_file):
+        with open(settings_file) as f:
+            settings_list = f.read().splitlines()
+            coin = settings_list[0]
+            symbol = settings_list[1]
+            url = settings_list[2]
+            alert_type = settings_list[3]
+            alert_sign = settings_list[4]
+            alert_number = settings_list[5]
+            is_sound = settings_list[6]
+            is_email = settings_list[7]
+            email = settings_list[8]
+            coin_name = symbol + " - " + coin
+    else:
+         #defaults for settings variables
+        coin = ""
+        symbol = ""
+        url = ""
+        alert_type = ""
+        alert_sign = ""
+        alert_number = 0
+        is_sound = False
+        is_email = False
+        email = ""
+        coin_name = ""
+
+    #settings GUI
     root.withdraw() #hide root
     settings = tkinter.Toplevel(root)
     settings.title("CryptoAlert Settings")
@@ -28,11 +66,11 @@ def settings_screen(root, coin, initial_price, alert_type, alert_number, is_soun
     #drop down list
     list_title = Label(settings, text = "Select Coin To Track ", bg = "azure", fg = "#000F46",
                 font = (None, 25)).place(x = 350, y = 75, anchor = "center")
-    cryptos = ["Update to load list of coins!"]
     list_font = font.Font(None, 25)
     settings.option_add("*TCombobox*Listbox*Font", list_font)
-    cryptos = AutocompleteCombobox(settings, width = 22, font = (None, 22), completevalues = cryptos)
+    cryptos = AutocompleteCombobox(settings, width = 30, font = (None, 15), completevalues = coin_list)
     cryptos.place(x = 350, y = 125, anchor = "center")
+    cryptos.set(coin_name)
 
     #update button
     update = Button(settings, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
@@ -148,21 +186,27 @@ def settings_screen(root, coin, initial_price, alert_type, alert_number, is_soun
 
     #Settings confirm function
     def settings_confirm():
-        if cryptos.get() != "" and cryptos.get() != "Update to load list of coins!":
-            coin = cryptos.get()
+        name = cryptos.get().split(" - ", 1) #split out the coin name, 2nd element is the "spelled out" name of the coin
+        print(name)
+        if len(name) > 1 and name[1] in coin_dict.keys() and name[1]!= "Update to load list of coins!":
+            coin = name[1]
+            symbol = coin_dict[name[1]][0]
+            url = coin_dict[name[1]][1]
         else:
             print("Invalid coin") #TO-DO: CALL TO ERROR SCREEN HERE
             return
 
         if price_changes_by["background"] == "#000F46":
             alert_type = "Percent"
+            alert_sign = "N/A"
             if int(changes_number.get()) > 0 and int(changes_number.get()) < 1000:
                 alert_number = int(changes_number.get())
             else:
                 print("Invalid changes number") #TO-DO: CALL TO ERROR SCREEN HERE
 
         elif price_is["background"] == "#000F46" and is_choice_dropdown != "":
-            alert_type = "Flat", is_choice_dropdown.get()
+            alert_type = "Flat"
+            alert_sign = is_choice_dropdown.get()
             try:
                 alert_number = float(is_number.get())
             except ValueError: #TO-DO: CALL TO ERROR SCREEN HERE
@@ -179,12 +223,20 @@ def settings_screen(root, coin, initial_price, alert_type, alert_number, is_soun
         
         if send_email["background"] == "#000F46":
             is_email = True
-            email = email_address.get()
+            test_email = email_address.get()
+            if (check_email(test_email)):
+                email = email_address.get()
+            else:
+                print("Invalid email") #TO-DO: CALL TO ERROR SCREEN HERE
+                return
         else:
             is_email = False
+            email = "N/A"
         
         print("Success") #TO-DO: REMOVE LATER
-        return coin, alert_type, alert_number, is_sound, is_email
+        with open(settings_file, "w+") as f:
+            f.write(str(coin) + "\n" + symbol + "\n" + url + "\n" "None\n" + str(alert_type) + "\n" + str(alert_sign) 
+            + "\n" + str(alert_number) + "\n" +str(is_sound) + "\n" + str(is_email) + "\n" + str(email))
 
         root.deiconify()
         settings.destroy()
@@ -201,7 +253,7 @@ def settings_screen(root, coin, initial_price, alert_type, alert_number, is_soun
         settings.destroy()
 
 #History screen display - TEST BUTTON FOR NOW
-def history_screen(root, coin, price, alert_type, alert_number, is_sound, is_email, email):
+def history_screen(root, coin, price, alert_type, alert_sign, alert_number, is_sound, is_email, email):
     print(coin)
     print(alert_type)
     print(alert_number)
