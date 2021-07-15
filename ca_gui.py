@@ -40,10 +40,10 @@ def settings_screen(root):
         symbol = ""
         url = ""
         alert_type = ""
-        alert_sign = ""
+        alert_sign = "="
         alert_number = 0
-        is_sound = False
-        is_email = False
+        is_sound = "False"
+        is_email = "False"
         email = ""
         coin_name = ""
 
@@ -86,7 +86,8 @@ def settings_screen(root):
                 font = (None, 22)).place(x = 490, y = 225)
     changes_number = Entry(settings, font = (None, 20), width = 4, relief = "sunken")
     changes_number.place(x = 425, y = 227)
-    changes_number.insert(0, "10")
+    if alert_type == "Percent":
+        changes_number.insert(0, alert_number)
     
     is_text = Label(settings, text = "Is ", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 292)
@@ -94,74 +95,90 @@ def settings_screen(root):
     is_choice_dropdown = AutocompleteCombobox(settings, width = 2, font = (None, 20), justify = "center",
                 completevalues = is_choices, state = "readonly")
     is_choice_dropdown.place(x = 300, y = 294)
+    if alert_sign != "N/A":
+        is_choice_dropdown.set(alert_sign)
     to_than_text = Label(settings, text = "  to", bg = "azure", fg = "#000F46",
             justify = "center", font = (None, 22))
     to_than_text.place(x = 375, y = 292)
 
     #changes text to to/than depending on the sign selected in dropdown
-    def to_than_change(eveny):
+    def to_than_change(event):
         if is_choice_dropdown.get() == "=":
             to_than_text.config(text = "  to")
         else:
             to_than_text.config(text = "than")
 
     is_choice_dropdown.bind("<<ComboboxSelected>>", to_than_change)
+    if alert_sign == "=":
+        to_than_text.config(text = "  to")
+    elif alert_sign == "<" or ">":
+        to_than_text.config(text = "than")
+
     is_sign = Label(settings, text = "$", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 450, y = 292)
     is_number = Entry(settings, font = (None, 20), width = 8, relief = "sunken")
     is_number.place(x = 475, y = 294)
+    if alert_type == "Flat":
+        is_number.insert(0, alert_number)
     
     alert_config_text = Label(settings, text = "Alert me by...", bg = "azure", fg = "#000F46",
                 font = (None, 30, "italic")).place(x = 150, y = 365)
     sound_alert_text = Label(settings, text = "Playing a sound!", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 425)
+
     email_alert_text = Label(settings, text = "Sending me an email!", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 490)
     email_address = Entry(settings, font = (None, 20), relief = "sunken")
     email_address.place(x = 250, y = 530)
-    email_address.insert(0, "")
+    if email != "N/A":
+        email_address.insert(0, email)
 
 
     #toggles
     #price 'changes by' toggle
-    price_changes_by = Canvas(settings, bg = "#000F46", borderwidth = 0, 
+    price_changes_by = Canvas(settings, bg = "light grey", borderwidth = 0, 
                 highlightthickness = 5, highlightbackground = "light grey", width = 25, height = 25) #default on display
     price_changes_by.place(x = 200, y = 225)
+    if alert_type == "Percent":
+        price_changes_by.config(bg = "#000F46")
+
 
     #price 'is' toggle
     price_is = Canvas(settings, bg = "light grey", borderwidth = 0, 
                 highlightthickness = 5, highlightbackground = "light grey", width = 25, height = 25)
     price_is.place(x = 200, y = 292)
+    if alert_type == "Flat":
+        price_is.config(bg = "#000F46")
 
     #alert 'play sound' toggle
     play_sound = Canvas(settings, bg = "light grey", borderwidth = 0, 
                 highlightthickness = 5, highlightbackground = "light grey", width = 25, height = 25)
     play_sound.place(x = 200, y = 425)
+    if is_sound == "True":
+        play_sound.config(bg = "#000F46")
 
     #'send email' toggle
     send_email = Canvas(settings, bg = "light grey", borderwidth = 0, 
                 highlightthickness = 5, highlightbackground = "light grey", width = 25, height = 25)
     send_email.place(x = 200, y = 490)
+    if is_email == "True":
+        send_email.config(bg = "#000F46")
 
     #toggle events
     def changes_by_toggle(event):
         if price_changes_by["background"] == "light grey":
             price_changes_by.config(bg = "#000F46")
-            alert = "Percent"
             price_is.config(bg = "light grey")
         else:
-            alert = "None"
             price_changes_by.config(bg = "light grey")
     price_changes_by.bind("<Button-1>", changes_by_toggle)
 
     def is_toggle(event):
         if price_is["background"] == "light grey":
             price_is.config(bg = "#000F46")
-            alert = "Flat"
             price_changes_by.config(bg = "light grey")
         else:
             price_is.config(bg = "light grey")
-            alert = "None"
     price_is.bind("<Button-1>", is_toggle)
 
     def sound_alert_toggle(event):
@@ -187,7 +204,6 @@ def settings_screen(root):
     #Settings confirm function
     def settings_confirm():
         name = cryptos.get().split(" - ", 1) #split out the coin name, 2nd element is the "spelled out" name of the coin
-        print(name)
         if len(name) > 1 and name[1] in coin_dict.keys() and name[1]!= "Update to load list of coins!":
             coin = name[1]
             symbol = coin_dict[name[1]][0]
@@ -211,9 +227,9 @@ def settings_screen(root):
                 alert_number = float(is_number.get())
             except ValueError: #TO-DO: CALL TO ERROR SCREEN HERE
                 print("Invalid Is number")
+                return
         else:
             print("Invalid alert") #TO-DO: CALL TO ERROR SCREEN HERE
-            print(lambda: alert_type)
             return
 
         if play_sound["background"] == "#000F46":
@@ -233,9 +249,8 @@ def settings_screen(root):
             is_email = False
             email = "N/A"
         
-        print("Success") #TO-DO: REMOVE LATER
         with open(settings_file, "w+") as f:
-            f.write(str(coin) + "\n" + symbol + "\n" + url + "\n" "None\n" + str(alert_type) + "\n" + str(alert_sign) 
+            f.write(str(coin) + "\n" + symbol + "\n" + url + "\n" + str(alert_type) + "\n" + str(alert_sign) 
             + "\n" + str(alert_number) + "\n" +str(is_sound) + "\n" + str(is_email) + "\n" + str(email))
 
         root.deiconify()
@@ -253,13 +268,8 @@ def settings_screen(root):
         settings.destroy()
 
 #History screen display - TEST BUTTON FOR NOW
-def history_screen(root, coin, price, alert_type, alert_sign, alert_number, is_sound, is_email, email):
-    print(coin)
-    print(alert_type)
-    print(alert_number)
-    print(is_sound)
-    print(is_email)
-    print(email)
+def history_screen(root):
+    return
 
 #History back button
 def history_back():
