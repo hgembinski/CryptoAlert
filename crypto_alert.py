@@ -55,7 +55,7 @@ def crypto_alert():
     #buttons
     settings = Button(root, bg = "#0042FF", activebackground = "dodgerblue2", fg = "antiquewhite1", activeforeground = "antiquewhite1",
                 text = "Settings", relief = "raised", width = 10, font = (None, 30, "bold"), 
-                command = lambda: settings_screen(root, coin, price, alert_type, alert_number, is_sound, is_email, email))
+                command = lambda: settings_screen(root))
     settings.place(x = 500, y = 650, anchor = "center")
 
     history = Button(root, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
