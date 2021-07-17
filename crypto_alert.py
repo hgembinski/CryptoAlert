@@ -4,24 +4,18 @@
 # as well as configurable sound/email alrts once the price hits a custom threshold.
 # Crypto choice, price alert threshold, and alert options can all be found under "settings".
 
-from bs4 import BeautifulSoup
-import requests
-import pandas
-import json
-import time
+
 import ca_gui
 from ca_gui import *
 
 #main function / main page of GUI
 def crypto_alert():
     #read the settings
-    coin = "None"
-    price = 0
-    alert_type = "None"
-    alert_number = 0
-    is_sound = False
-    is_email = False
-    email = ""
+    settings_file = "settings.txt"
+    full_settings = load_settings(settings_file)
+    coin, symbol, url, alert_type, alert_sign, alert_number, is_sound, is_email, email = full_settings #unpack settings
+    start_price = None
+    initial = True #if this is the initial load
 
     #initial GUI setup
     root = tkinter.Tk()
@@ -62,6 +56,9 @@ def crypto_alert():
                 text = "History", relief = "raised", width = 10, font = (None, 30, "bold"),
                 command = lambda: history_screen(root, coin, price, alert_type, alert_number, is_sound, is_email, email)) #TO-DO: TESTING FOR NOW
     history.place(x = 200, y = 650, anchor = "center")
+
+    def update():
+        return
 
 
 
