@@ -14,40 +14,22 @@ def settings_screen(root):
     settings_file = "settings.txt"
     csv_file = "cryptos.csv"
 
-    #attempt to construct dictionary from file
+    #construct dictionary from file
     coin_dict = csv_to_dict(csv_file)
     coin_list = []
     for key in coin_dict.keys():
         coin_list.append(coin_dict[key][0] + " - " + key)
 
-    #load settings if they exist already
-    if path.exists(settings_file) and path.isfile(settings_file):
-        with open(settings_file) as f:
-            settings_list = f.read().splitlines()
-            coin = settings_list[0]
-            symbol = settings_list[1]
-            url = settings_list[2]
-            alert_type = settings_list[3]
-            alert_sign = settings_list[4]
-            alert_number = settings_list[5]
-            is_sound = settings_list[6]
-            is_email = settings_list[7]
-            email = settings_list[8]
-            coin_name = symbol + " - " + coin
-    else:
-         #defaults for settings variables
-        coin = ""
-        symbol = ""
-        url = ""
-        alert_type = ""
-        alert_sign = "="
-        alert_number = 0
-        is_sound = "False"
-        is_email = "False"
-        email = ""
-        coin_name = ""
+    #load settings
+    full_settings = load_settings(settings_file)
+    coin, symbol, url, alert_type, alert_sign, alert_number, is_sound, is_email, email = full_settings #unpack settings
 
-    #settings GUI
+    if coin != "": #for displaying coin in combobox entry field
+        coin_name = symbol + " - " + coin
+    else:
+        coin_name = coin
+
+    #main settings GUI
     root.withdraw() #hide root
     settings = tkinter.Toplevel(root)
     settings.title("CryptoAlert Settings")
