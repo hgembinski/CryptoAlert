@@ -18,6 +18,9 @@ def crypto_alert():
     settings_file = "settings.txt"
     settings = ca_settings(settings_file)
     current_price = get_price(settings.get_url())
+    last_price = ""
+    color = "white"
+    counter = 0
 
     #GUI init
     root = tkinter.Tk()
@@ -48,7 +51,27 @@ def crypto_alert():
 
 
     def update():
-        return
+        nonlocal last_price, current_price, color, counter
+        if last_price != current_price:
+            last_price = current_price
+
+        current_price = get_price(settings.get_url())
+        
+        if float(current_price) > float(last_price):
+            gui.set_price_color("lime green")
+            color = "green"
+        elif float(current_price) < float(last_price):
+            color = "red"
+            gui.set_price_color("red")
+        
+        gui.set_price("$" + current_price)
+        print(counter)
+        print("Current Price: " + current_price)
+        print("Last Price: " + last_price)
+        print("Color: " + color)
+        print("------------------------")
+        counter = counter + 1
+        root.after(30000, update)
 
 
     update()
