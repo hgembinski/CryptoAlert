@@ -61,6 +61,9 @@ class ca_gui:
 
     def set_price(self, new_price):
         self.price.config(text = new_price)
+
+    def set_price_color(self, color):
+        self.price.config(fg = color)
         
     def set_alert_text(self, new_text):
         self.alert_display.config(text = new_text)
