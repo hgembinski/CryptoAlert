@@ -7,61 +7,51 @@
 
 import ca_gui
 from ca_gui import *
+import ca_scraping
+from ca_scraping import *
+import ca_settings
+from ca_settings import *
+import time
 
 #main function / main page of GUI
 def crypto_alert():
-    #read the settings
     settings_file = "settings.txt"
-    full_settings = load_settings(settings_file)
-    coin, symbol, url, alert_type, alert_sign, alert_number, is_sound, is_email, email = full_settings #unpack settings
-    start_price = None
-    initial = True #if this is the initial load
+    settings = ca_settings(settings_file)
+    current_price = get_price(settings.get_url())
 
-    #initial GUI setup
+    #GUI init
     root = tkinter.Tk()
-    root.title("CryptoAlert")
-    root.geometry("700x750")
-    root.resizable(False, False)
-    root.config(bg = "azure", highlightbackground = "#000F46", highlightcolor = "#000F46", highlightthickness = 10)
+    gui = ca_gui(root, settings)
 
-    #text elements
-    title = Label(root, text = "CryptoAlert", bg = '#000F46', fg = "white", width = 12,
-                font = (None, 40)).place(x = 350, y = 50, anchor = "s")
-    cryptoname = Label(root, text = "No Coin Selected", bg = "azure", fg = "#000F46",
-                font = (None, 35, "bold")).place(x = 350, y = 125, anchor = "center")
+    gui.set_crypto(settings.get_symbol() + " - " + settings.get_coin())
+    gui.set_price("$" + current_price)
+    resize_font(root, gui.get_font(), gui.get_price_label())
 
-    #price ticker
-    priceframe = Frame(root, bg = 'grey9', highlightbackground = "#000F46", highlightcolor = "#000F46",
-                highlightthickness = 12.5, relief = "flat", height = 200, width = 500).place(x = 350, y = 300, anchor = "center")
-    price = Label(priceframe, text = "$00000.00", bg = "grey9",fg = "antiquewhite1", width = 8,
-                font = (None, 75)).place(x = 350, y = 300, anchor = "center")
+    if settings.get_alert_type() == "Percent":
+        gui.set_alert_text("Alerting when the price changes by: " + settings.get_alert_number() + "%!")
+    elif settings.get_alert_type() == "Flat":
+        if settings.get_alert_sign() == "=":
+            phrase = "is equal to $"
+        elif settings.get_alert_sign() == "<":
+            phrase = "is less than $"
+        elif settings.get_alert_sign() == ">":
+            phrase = "is greater than $"
 
-    #alert display
-    alert_display = Label(root, text = "No Alert Set!", bg = "azure", fg = "#000F46",
-                font = (None, 25)).place(x = 350, y = 430, anchor = "center")
-    sound_display = Label(root, text = "I will not play a sound!", bg = "azure", fg = "#000F46",
-                font = (None, 25)).place(x = 350, y = 480, anchor = "center")
-    email_display = Label(root, text = "I will not send an email!", bg = "azure", fg = "#000F46",
-                font = (None, 25)).place(x = 350, y = 530, anchor = "center")
-    email_address_display = Label(root, text = "", bg = "azure", fg = "#000F46",
-                font = (None, 20)).place(x = 350, y = 570, anchor = "center")
+        gui.set_alert_text("Alerting when the price " + phrase + settings.get_alert_number() + "!")
 
-    #buttons
-    settings = Button(root, bg = "#0042FF", activebackground = "dodgerblue2", fg = "antiquewhite1", activeforeground = "antiquewhite1",
-                text = "Settings", relief = "raised", width = 10, font = (None, 30, "bold"), 
-                command = lambda: settings_screen(root))
-    settings.place(x = 500, y = 650, anchor = "center")
+    if settings.get_sound_status() == "True":
+        gui.set_sound_alert_text("I will play a sound!")
+    
+    if settings.get_email_status() == "True":
+        gui.set_email_alert_text("I will send an email to:")
+        gui.set_email_text(settings.get_email())
 
-    history = Button(root, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
-                text = "History", relief = "raised", width = 10, font = (None, 30, "bold"),
-                command = lambda: history_screen(root, coin, price, alert_type, alert_number, is_sound, is_email, email)) #TO-DO: TESTING FOR NOW
-    history.place(x = 200, y = 650, anchor = "center")
 
     def update():
         return
 
 
-
+    update()
     root.mainloop()
 
 crypto_alert()

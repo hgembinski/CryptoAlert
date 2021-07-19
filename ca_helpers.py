@@ -16,37 +16,6 @@ def csv_to_dict(file):
     
     return dict
 
-#load settings from file and return them as a list
-def load_settings(file):
-    settings = []
-
-    #defaults for settings variables
-    coin = ""
-    symbol = ""
-    url = ""
-    alert_type = ""
-    alert_sign = "="
-    alert_number = 0
-    is_sound = "False"
-    is_email = "False"
-    email = ""
-
-    if path.exists(file) and path.isfile(file): #if the settings file exists, update settings from file
-        with open(file) as f:
-            settings_list = f.read().splitlines()
-            coin = settings_list[0]
-            symbol = settings_list[1]
-            url = settings_list[2]
-            alert_type = settings_list[3]
-            alert_sign = settings_list[4]
-            alert_number = settings_list[5]
-            is_sound = settings_list[6]
-            is_email = settings_list[7]
-            email = settings_list[8]
-
-    settings.extend([coin, symbol, url, alert_type, alert_sign, alert_number, is_sound, is_email, email])
-    return settings
-
 #check validity of email
 def check_email(email):
     regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
@@ -55,3 +24,19 @@ def check_email(email):
         return True
 
     return False
+
+def resize_font(root, current_font, label):
+    font_size = current_font.cget("size")
+    width = label.winfo_width()
+
+    if width > 425:
+        current_font.configure(size = font_size - 1)
+        root.update()
+        resize_font(root, current_font, label)
+
+    if width < 400:
+        current_font.configure(size = font_size + 1)
+        root.update()
+        resize_font(root, current_font, label)
+    
+    label.config(fg = "antiquewhite1") #actually show the text once it's properly sized
