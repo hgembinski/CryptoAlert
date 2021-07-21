@@ -29,7 +29,9 @@ def resize_font(root, current_font, label):
     font_size = current_font.cget("size")
     width = label.winfo_width()
 
-    if width > 425:
+    label.config(fg = label.cget("bg"))
+
+    if width > 415:
         current_font.configure(size = font_size - 1)
         root.update()
         resize_font(root, current_font, label)
