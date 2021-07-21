@@ -56,6 +56,8 @@ class ca_gui:
                     activeforeground = "antiquewhite1", text = "History", relief = "raised", width = 10, font = (None, 30, "bold"))
         self.history_button.place(x = 200, y = 650, anchor = "center")
 
+        self.default_display()
+
     def set_crypto(self, new_name):
         self.cryptoname.config(text = new_name)
 
@@ -85,6 +87,14 @@ class ca_gui:
 
     def get_price_label(self):
         return self.price
+
+    def default_display(self):
+        self.set_crypto("No Coin Selected")
+        self.set_price("")
+        self.set_alert_text("No alert set!")
+        self.set_sound_alert_text("")
+        self.set_email_alert_text("")
+        self.set_email_text("")    
 
     def show_settings_screen(self, master, settings):
         #construct dict of coins
@@ -144,28 +154,15 @@ class ca_gui:
 
         is_text = Label(settings_gui, text = "Is ", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 250, y = 292)
-        is_choices = ["=", "<", ">"]
+        is_choices = ["<", ">"]
         is_choice_dropdown = AutocompleteCombobox(settings_gui, width = 2, font = (None, 20), justify = "center",
                     completevalues = is_choices, state = "readonly")
         is_choice_dropdown.place(x = 300, y = 294)
         if settings.get_alert_sign() != "N/A":
             is_choice_dropdown.set(settings.get_alert_sign())
-        to_than_text = Label(settings_gui, text = "  to", bg = "azure", fg = "#000F46",
+        than_text = Label(settings_gui, text = "than", bg = "azure", fg = "#000F46",
                 justify = "center", font = (None, 22))
-        to_than_text.place(x = 375, y = 292)
-
-        #changes text to to/than depending on the sign selected in dropdown
-        def to_than_change(event):
-            if is_choice_dropdown.get() == "=":
-                to_than_text.config(text = "  to")
-            else:
-                to_than_text.config(text = "than")
-
-        is_choice_dropdown.bind("<<ComboboxSelected>>", to_than_change)
-        if settings.get_alert_sign() == "=":
-            to_than_text.config(text = "  to")
-        elif settings.get_alert_sign() == "<" or ">":
-            to_than_text.config(text = "than")
+        than_text.place(x = 375, y = 292)
 
         is_sign = Label(settings_gui, text = "$", bg = "azure", fg = "#000F46",
                 font = (None, 22)).place(x = 450, y = 292)
@@ -278,7 +275,7 @@ class ca_gui:
                 alert_type = "Flat"
                 alert_sign = is_choice_dropdown.get()
                 try:
-                    alert_number = float(is_number.get())
+                    alert_number = is_number.get()
                 except ValueError: #TO-DO: CALL TO ERROR SCREEN HERE
                     print("Invalid Is number")
                     return
