@@ -74,3 +74,14 @@ class ca_settings:
         self.email_status = new_estatus
         self.email = new_email
         self.is_new = True
+    
+    def print_settings(self):
+        print(self.coin)
+        print(self.symbol)
+        print(self.url)
+        print(self.alert_type)
+        print(self.alert_sign)
+        print(self.alert_number)
+        print(self.sound_status)
+        print(self.email_status)
+        print(self.email)
