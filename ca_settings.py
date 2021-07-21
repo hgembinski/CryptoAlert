@@ -6,16 +6,7 @@ from os import path
 class ca_settings:
     def __init__(self, file):
         #defaults for settings variables
-        self.coin = ""
-        self.symbol = ""
-        self.url = ""
-        self.alert_type = ""
-        self.alert_sign = "="
-        self.alert_number = 0
-        self.sound_status = "False"
-        self.email_status = "False"
-        self.email = ""
-        self.is_new = True
+        self.blank_settings()
 
         if path.exists(file) and path.isfile(file):
             with open(file) as f:
@@ -62,6 +53,18 @@ class ca_settings:
 
     def set_is_new(self, status: bool):
         self.is_new = status
+
+    def blank_settings(self):
+        self.coin = ""
+        self.symbol = ""
+        self.url = ""
+        self.alert_type = ""
+        self.alert_sign = ""
+        self.alert_number = 0
+        self.sound_status = "False"
+        self.email_status = "False"
+        self.email = ""
+        self.is_new = True
 
     def new_settings(self, new_coin, new_symbol, new_url, new_alert, new_sign, new_number, new_sstatus, new_estatus, new_email):
         self.coin = new_coin
