@@ -3,8 +3,10 @@
 #(Mostly for handling files and input verification)
 
 import re
-from os import path
+from os import path, remove
 import pandas as pd
+import winsound
+from winsound import *
 
 #convert csv file to dict with name column as key
 def csv_to_dict(file):
@@ -25,6 +27,11 @@ def check_email(email):
 
     return False
 
+#delete settings file
+def delete_settings_file():
+    remove("settings.txt")
+
+#resize font to fit ticker frame
 def resize_font(root, current_font, label):
     font_size = current_font.cget("size")
     width = label.winfo_width()
@@ -42,3 +49,33 @@ def resize_font(root, current_font, label):
         resize_font(root, current_font, label)
     
     label.config(fg = "antiquewhite1") #actually show the text once it's properly sized
+
+def alert_check(settings, initial_price, current_price):
+    price = float(current_price.replace(",",""))
+
+    if settings.get_alert_type() == "Percent":
+        initial = float(initial_price.replace(",",""))
+        percent = float(settings.get_alert_number()) / 100
+        bound = initial * percent
+
+        if price > (initial + bound) or price < (initial - bound):
+            return True
+
+    elif settings.get_alert_type() == "Flat":
+        if settings.get_alert_sign() == "<":
+            if price < float(settings.get_alert_number().replace(",","")):
+                return True
+
+        elif settings.get_alert_sign() == ">":
+            if price > float(settings.get_alert_number().replace(",","")):
+                return True
+
+        return
+
+    return False
+
+def play_sound():
+    Beep(440, 200)
+    Beep(440, 100)
+    Beep(440, 100)
+    Beep(494, 600)
