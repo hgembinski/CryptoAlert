@@ -80,6 +80,9 @@ class ca_gui:
     def get_font(self):
         return self.price_font
 
+    def set_font_size(self, new_size):
+        self.price_font.config(size = new_size)
+
     def get_price_label(self):
         return self.price
 
@@ -266,8 +269,8 @@ class ca_gui:
             if price_changes_by["background"] == "#000F46":
                 alert_type = "Percent"
                 alert_sign = "N/A"
-                if int(changes_number.get()) > 0 and int(changes_number.get()) < 1000:
-                    alert_number = int(changes_number.get())
+                if float(changes_number.get()) > 0 and float(changes_number.get()) < 1000:
+                    alert_number = float(changes_number.get())
                 else:
                     print("Invalid changes number") #TO-DO: CALL TO ERROR SCREEN HERE
 
@@ -284,12 +287,12 @@ class ca_gui:
                 return
 
             if play_sound["background"] == "#000F46":
-                is_sound = True
+                is_sound = "True"
             else:
-                is_sound = False
+                is_sound = "False"
             
             if send_email["background"] == "#000F46":
-                is_email = True
+                is_email = "True"
                 test_email = email_address.get()
                 if (check_email(test_email)):
                     email = email_address.get()
@@ -297,7 +300,7 @@ class ca_gui:
                     print("Invalid email") #TO-DO: CALL TO ERROR SCREEN HERE
                     return
             else:
-                is_email = False
+                is_email = "False"
                 email = "N/A"
 
             #save to file   
