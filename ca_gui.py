@@ -270,7 +270,7 @@ class ca_gui:
                 alert_type = "Percent"
                 alert_sign = "N/A"
                 if float(changes_number.get()) > 0 and float(changes_number.get()) < 1000:
-                    alert_number = float(changes_number.get())
+                    alert_number = changes_number.get()
                 else:
                     print("Invalid changes number") #TO-DO: CALL TO ERROR SCREEN HERE
 
