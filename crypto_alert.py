@@ -17,92 +17,81 @@ import time
 def crypto_alert():
     settings_file = "settings.txt"
     settings = ca_settings(settings_file)
-    current_price = get_price(settings.get_url())
-    last_price = ""
+
+    if settings.get_coin() != "":
+        current_price = get_price(settings.get_url())
+        last_price = current_price
+    else:
+        current_price = ""
+        last_price = ""
     initial = ""
     counter = 0
     counter2 = 0
     start = ""
+
     #GUI init
     root = tkinter.Tk()
     gui = ca_gui(root, settings)
 
 
     def update():
-        nonlocal settings, last_price, current_price, initial, counter, counter2, start
+        nonlocal settings, current_price, last_price, initial, counter, counter2, start
         counter = counter + 1
-
+        print(counter)
+        print("-----")
         if start == "":
             start = time.time()
 
-        if settings.get_is_new():
-            current_price = get_price(settings.get_url())
-            set_ticker(root, settings, gui, current_price)
-            set_alert_info(settings, gui)
-            initial = current_price
-            settings.set_is_new(False)
-            counter = 60
+        if settings.get_coin() != "" :
+            if settings.get_is_new():
+                current_price = get_price(settings.get_url())
+                set_ticker(root, settings, gui, current_price)
+                set_alert_info(settings, gui)
+                initial = current_price
+                settings.set_is_new(False)
+                counter = 30
 
-        if counter > 60:
-            counter = 0
-            if last_price != current_price:
-                last_price = current_price
+            if counter > 30:
+                counter = 0
 
-            current_price = get_price(settings.get_url())
-            
-            if float(current_price.replace(",","")) > float(last_price.replace(",","")):
-                gui.set_price_color("lime green")
-            elif float(current_price.replace(",","")) < float(last_price.replace(",","")):
-                gui.set_price_color("red")
-            
-            gui.set_price("$" + current_price)
-            print("------------------------")
-            print(counter2)
-            print("Initial Price: " + initial)
-            print("Current Price: " + current_price)
-            print("Last Price: " + last_price)
-            counter = counter + 1
-            end = time.time()
-            print("Elapsed time: " + str(end - start))
-            start = time.time()
-            end = 0
-        
-        root.after(500, update)
+                if current_price != "" and last_price != current_price:
+                    last_price = current_price
+
+                current_price = get_price(settings.get_url())
+
+                if alert_check(settings, initial, current_price):
+                    if settings.get_sound_status() == "True":
+                        play_sound()
+                        
+                    print("Alert!")
+                    print(current_price)
+                    print(initial)
+                    settings.print_settings()
+                    settings.blank_settings()
+                    delete_settings_file()
+                    gui.default_display()
+
+                else:
+                    if float(current_price.replace(",","")) > float(last_price.replace(",","")):
+                        gui.set_price_color("lime green")
+                    elif float(current_price.replace(",","")) < float(last_price.replace(",","")):
+                        gui.set_price_color("red")
+                    
+                    gui.set_price("$" + current_price)
+                    print("------------------------")
+                    print(counter2)
+                    print("Initial Price: " + initial)
+                    print("Current Price: " + current_price)
+                    print("Last Price: " + last_price)
+                    counter = counter + 1
+                    end = time.time()
+                    print("Elapsed time: " + str(end - start))
+                    start = time.time()
+                    end = 0
+        root.after(1000, update)
 
 
     update()
     root.mainloop()
-
-def set_alert_info(settings, gui):
-    if settings.get_alert_type() == "Percent":
-        gui.set_alert_text("Alerting when the price changes by: " + str(settings.get_alert_number()) + "%!")
-    elif settings.get_alert_type() == "Flat":
-        if settings.get_alert_sign() == "=":
-            phrase = "is equal to $"
-        elif settings.get_alert_sign() == "<":
-            phrase = "is less than $"
-        elif settings.get_alert_sign() == ">":
-            phrase = "is greater than $"
-        gui.set_alert_text("Alerting when the price " + phrase + str(settings.get_alert_number()) + "!")
-
-    if settings.get_sound_status() == "True":
-        gui.set_sound_alert_text("I will play a sound!")
-    elif settings.get_sound_status() == "False":
-        gui.set_sound_alert_text("I will not play a sound!")
-
-    if settings.get_email_status() == "True":
-        gui.set_email_alert_text("I will send an email to:")
-        gui.set_email_text(settings.get_email())
-    elif settings.get_email_status() == "False":
-        gui.set_email_alert_text("I will not send an email!")
-        gui.set_email_text("")
-
-def set_ticker(root, settings, gui, current_price):
-    gui.set_crypto(settings.get_symbol() + " - " + settings.get_coin())
-    gui.set_font_size(5)
-    gui.set_price("$" + current_price)
-    root.update()
-    resize_font(root, gui.get_font(), gui.get_price_label())
-
 
 crypto_alert()
