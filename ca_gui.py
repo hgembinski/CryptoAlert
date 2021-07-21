@@ -34,16 +34,16 @@ class ca_gui:
         master.update()
 
         #alert display
-        self.alert_display = Label(master, text = "No Alert Set!", bg = "azure", fg = "#000F46",font = (None, 25))
+        self.alert_display = Label(master, bg = "azure", fg = "#000F46",font = (None, 25))
         self.alert_display.place(x = 350, y = 430, anchor = "center")
                     
-        self.sound_display = Label(master, text = "I will not play a sound!", bg = "azure", fg = "#000F46",font = (None, 25))
+        self.sound_display = Label(master, bg = "azure", fg = "#000F46",font = (None, 25))
         self.sound_display.place(x = 350, y = 480, anchor = "center")
 
-        self.email_display = Label(master, text = "I will not send an email!", bg = "azure", fg = "#000F46", font = (None, 25))
+        self.email_display = Label(master, bg = "azure", fg = "#000F46", font = (None, 25))
         self.email_display.place(x = 350, y = 530, anchor = "center")
 
-        self.email_address_display = Label(master, text = "", bg = "azure", fg = "#000F46",font = (None, 20))
+        self.email_address_display = Label(master, bg = "azure", fg = "#000F46",font = (None, 20))
         self.email_address_display.place(x = 350, y = 570, anchor = "center")
 
         #buttons
@@ -332,5 +332,34 @@ class ca_gui:
             return
 
         return
+
+def set_alert_info(settings, gui):
+        if settings.get_alert_type() == "Percent":
+            gui.set_alert_text("Alerting when the price changes by: " + str(settings.get_alert_number()) + "%!")
+        elif settings.get_alert_type() == "Flat":
+            if settings.get_alert_sign() == "<":
+                phrase = "is less than $"
+            elif settings.get_alert_sign() == ">":
+                phrase = "is greater than $"
+            gui.set_alert_text("Alerting when the price " + phrase + str(settings.get_alert_number()) + "!")
+
+        if settings.get_sound_status() == "True":
+            gui.set_sound_alert_text("I will play a sound!")
+        elif settings.get_sound_status() == "False":
+            gui.set_sound_alert_text("I will not play a sound!")
+
+        if settings.get_email_status() == "True":
+            gui.set_email_alert_text("I will send an email to:")
+            gui.set_email_text(settings.get_email())
+        elif settings.get_email_status() == "False":
+            gui.set_email_alert_text("I will not send an email!")
+            gui.set_email_text("")
+
+def set_ticker(root, settings, gui, current_price):
+    gui.set_crypto(settings.get_symbol() + " - " + settings.get_coin())
+    gui.set_font_size(5)
+    gui.set_price("$" + current_price)
+    root.update()
+    resize_font(root, gui.get_font(), gui.get_price_label())
 
         
