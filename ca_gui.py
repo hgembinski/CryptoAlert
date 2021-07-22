@@ -266,15 +266,27 @@ class ca_gui:
             if price_changes_by["background"] == "#000F46":
                 alert_type = "Percent"
                 alert_sign = "N/A"
+                try:
+                    check = float(changes_number.get())
+                except ValueError: #TO-DO: CALL TO ERROR SCREEN HERE
+                    print("Invalid changes number")
+                    return
                 if float(changes_number.get()) > 0 and float(changes_number.get()) < 1000:
                     alert_number = changes_number.get()
                 else:
                     print("Invalid changes number") #TO-DO: CALL TO ERROR SCREEN HERE
 
-            elif price_is["background"] == "#000F46" and is_choice_dropdown != "":
+            elif price_is["background"] == "#000F46":
                 alert_type = "Flat"
                 alert_sign = is_choice_dropdown.get()
+                if alert_sign != "<" and alert_sign != ">":
+                    print("Invalid is sign") #TO-DO: CALL TO ERROR SCREEN HERE
+                    return
                 try:
+                    check = float(is_number.get())
+                    if check < 0:
+                        print("Invalid is number") #TO-DO: CALL TO ERROR SCREEN HERE
+                        return
                     alert_number = is_number.get()
                 except ValueError: #TO-DO: CALL TO ERROR SCREEN HERE
                     print("Invalid Is number")
