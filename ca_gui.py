@@ -379,9 +379,9 @@ class ca_gui:
         sound_info.place(x = 300, y = 300, anchor = "center")
 
         if settings.get_sound_status() == "True":
-            sound_info.config(text = "A sound was played.")
+            sound_info.config(text = "A sound alert played.")
         else:
-            sound_info.config(text = "A sound was not played.")
+            sound_info.config(text = "A sound alert was not played.")
 
         email_info = Label(alert_screen, bg = "azure", fg = "#000F46", justify = "center", font = (None, 20))
         email_info.place(x = 300, y = 350, anchor = "center")
