@@ -37,8 +37,8 @@ def crypto_alert():
     def update():
         nonlocal settings, current_price, last_price, initial, counter, counter2, start
         counter = counter + 1
-        print(counter)
-        print("-----")
+        #print(counter)
+        #print("-----")
         if start == "":
             start = time.time()
 
@@ -49,9 +49,9 @@ def crypto_alert():
                 set_alert_info(settings, gui)
                 initial = current_price
                 settings.set_is_new(False)
-                counter = 30
+                counter = 61
 
-            if counter > 30:
+            if counter > 60:
                 counter = 0
 
                 if current_price != "" and last_price != current_price:
@@ -60,16 +60,15 @@ def crypto_alert():
                 current_price = get_price(settings.get_url())
 
                 if alert_check(settings, initial, current_price):
-                    if settings.get_sound_status() == "True":
-                        play_sound()
-                        
-                    print("Alert!")
-                    print(current_price)
-                    print(initial)
+                    gui.show_alert_screen(root, settings, initial)
+                    
                     settings.print_settings()
                     settings.blank_settings()
                     delete_settings_file()
                     gui.default_display()
+                    print("Alert!")
+                    print(current_price)
+                    print(initial)
 
                 else:
                     if float(current_price.replace(",","")) > float(last_price.replace(",","")):
@@ -83,12 +82,12 @@ def crypto_alert():
                     print("Initial Price: " + initial)
                     print("Current Price: " + current_price)
                     print("Last Price: " + last_price)
-                    counter = counter + 1
+                    counter2 = counter2 + 1
                     end = time.time()
                     print("Elapsed time: " + str(end - start))
                     start = time.time()
                     end = 0
-        root.after(1000, update)
+        root.after(500, update)
 
 
     update()

@@ -10,6 +10,7 @@ from tkinter import ttk
 from ttkwidgets.autocomplete import AutocompleteCombobox
 import ca_helpers
 from ca_helpers import *
+from time import localtime, strftime
 
 class ca_gui:
     def __init__(self, master, settings):
@@ -22,8 +23,8 @@ class ca_gui:
 
         self.title = Label(master, text = "CryptoAlert", bg = '#000F46', fg = "white", width = 12,
                     font = (None, 40)).place(x = 350, y = 50, anchor = "s")
-        self.cryptoname = Label(master, text = "No Coin Selected", bg = "azure", fg = "#000F46", font = (None, 35, "bold"))
-        self.cryptoname.place(x = 350, y = 125, anchor = "center")
+        self.crypto_name = Label(master, text = "No Coin Selected", bg = "azure", fg = "#000F46", font = (None, 35, "bold"))
+        self.crypto_name.place(x = 350, y = 125, anchor = "center")
 
         #price ticker
         self.priceframe = Frame(master, bg = 'grey9', highlightbackground = "#000F46", highlightcolor = "#000F46",
@@ -59,7 +60,7 @@ class ca_gui:
         self.default_display()
 
     def set_crypto(self, new_name):
-        self.cryptoname.config(text = new_name)
+        self.crypto_name.config(text = new_name)
 
     def set_price(self, new_price):
         self.price.config(text = new_price)
@@ -271,10 +272,11 @@ class ca_gui:
                 except ValueError: #TO-DO: CALL TO ERROR SCREEN HERE
                     print("Invalid changes number")
                     return
-                if float(changes_number.get()) > 0 and float(changes_number.get()) < 1000:
+                if float(changes_number.get()) >= 0 and float(changes_number.get()) < 1000:
                     alert_number = changes_number.get()
                 else:
                     print("Invalid changes number") #TO-DO: CALL TO ERROR SCREEN HERE
+                    return
 
             elif price_is["background"] == "#000F46":
                 alert_type = "Flat"
@@ -337,6 +339,73 @@ class ca_gui:
             return
         
         return
+
+    def show_alert_screen(self, master, settings, initial):
+        alert_screen = tkinter.Toplevel(master)
+        alert_screen.title("Alert Triggered!")
+        alert_screen.resizable(False, False)
+        alert_screen.grab_set()
+
+        x = master.winfo_x()
+        y = master.winfo_y()
+        h = master.winfo_height()
+        w= master.winfo_width()
+        alert_screen.geometry("%dx%d+%d+%d" % (w - 100, h - 150, x + 50, y + 75))
+        alert_screen.config(bg = "azure", highlightbackground = "#000F46", highlightcolor = "#000F46", highlightthickness = 10)
+
+        #text elements
+        alert_title = Label(alert_screen, text = "Alert!", bg = '#000F46', fg = "white", width = 12,
+                    font = (None, 30)).place(x = 300, y = 40, anchor = "s")
+
+        alert_info = Message(alert_screen, bg = "azure", fg = "#000F46", width = 500, justify = "center", font = (None, 20))
+        alert_info.place(x = 300, y = 120, anchor = "center")
+        alert_info.config(text = "Alert triggered for \n" + settings.get_symbol() + " - " + settings.get_coin() +
+                    "\nat " + strftime("%H:%M:%S", localtime()))
+
+        alert_price_info = Message(alert_screen, bg = "azure", fg = "#000F46", width = 500, justify = "center", font = (None, 20))
+        alert_price_info.place(x = 300, y = 225, anchor = "center")
+
+        if settings.get_alert_type() == "Percent":
+            alert_price_info.config(text = "Price changed by " + settings.get_alert_number() + "%" + "\nfrom $" + str(initial))
+        elif settings.get_alert_type() == "Flat":
+            phrase = ""
+            if settings.get_alert_sign() == ">":
+                phrase = "greater than $"
+            elif settings.get_alert_sign() == "<":
+                phrase = "less than $"
+            alert_price_info.config(text = "Price was\n" + phrase + settings.get_alert_number())
+
+        sound_info = Label(alert_screen, bg = "azure", fg = "#000F46", justify = "center", font = (None, 20))
+        sound_info.place(x = 300, y = 300, anchor = "center")
+
+        if settings.get_sound_status() == "True":
+            sound_info.config(text = "A sound was played.")
+        else:
+            sound_info.config(text = "A sound was not played.")
+
+        email_info = Label(alert_screen, bg = "azure", fg = "#000F46", justify = "center", font = (None, 20))
+        email_info.place(x = 300, y = 350, anchor = "center")
+
+        email_address = Label(alert_screen, bg = "azure", fg = "#000F46", justify = "center", font = (None, 20))
+        email_address.place(x = 300, y = 390, anchor = "center")
+
+        if settings.get_email_status() == "True":
+            email_info.config(text = "An email was sent to:")
+            email_address.config(text = str(settings.get_email()))
+        else:
+            email_info.config(text = "An email was not sent.")
+
+        close_button = Button(alert_screen, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
+                    text = "Close", relief = "raised", width = 10, font = (None, 25, "bold"), command = lambda: alert_close())
+        close_button.place(x = 300, y = 500, anchor = "center")
+
+        master.update()
+        if settings.get_sound_status() == "True":
+            play_sound()
+
+        def alert_close():
+            alert_screen.destroy()
+
 
     def show_error_screen(self, message):
         
