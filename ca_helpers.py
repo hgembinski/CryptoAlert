@@ -58,7 +58,7 @@ def alert_check(settings, initial_price, current_price):
         percent = float(settings.get_alert_number()) / 100
         bound = initial * percent
 
-        if price > (initial + bound) or price < (initial - bound):
+        if price >= (initial + bound) or price <= (initial - bound):
             return True
 
     elif settings.get_alert_type() == "Flat":
