@@ -27,7 +27,7 @@ class ca_gui:
         self.crypto_name.place(x = 350, y = 125, anchor = "center")
 
         #price ticker
-        self.priceframe = Frame(master, bg = 'grey9', highlightbackground = "#000F46", highlightcolor = "#000F46",
+        self.priceframe = Frame(master, bg = 'grey9', highlightbackground = "#0042FF", highlightcolor = "#0042FF",
                     highlightthickness = 12.5, relief = "flat", height = 200, width = 500).place(x = 350, y = 300, anchor = "center")
         self.price_font = font.Font(size = 5)
         self.price = Label(master, text = "$0000.00", bg = "grey9", fg = "grey9", font = self.price_font)
