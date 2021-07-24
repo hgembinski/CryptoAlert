@@ -261,7 +261,9 @@ class ca_gui:
                 symbol = coin_dict[name[1]][0]
                 url = coin_dict[name[1]][1]
             else:
-                print("Invalid coin") #TO-DO: CALL TO ERROR SCREEN HERE
+                print("Invalid coin")
+                message = "Invalid coin, please try again."
+                show_error_screen(settings_gui, message)
                 return
 
             if price_changes_by["background"] == "#000F46":
@@ -269,32 +271,38 @@ class ca_gui:
                 alert_sign = "N/A"
                 try:
                     check = float(changes_number.get())
-                except ValueError: #TO-DO: CALL TO ERROR SCREEN HERE
-                    print("Invalid changes number")
+                except ValueError:
+                    message = "'Changes by' value must be a valid number between 0 and 1000, please try again."
+                    show_error_screen(settings_gui, message)
                     return
                 if float(changes_number.get()) >= 0 and float(changes_number.get()) < 1000:
                     alert_number = changes_number.get()
                 else:
-                    print("Invalid changes number") #TO-DO: CALL TO ERROR SCREEN HERE
+                    message = "'Changes by' value must be a valid number between 0 and 1000, please try again."
+                    show_error_screen(settings_gui, message)
                     return
 
             elif price_is["background"] == "#000F46":
                 alert_type = "Flat"
                 alert_sign = is_choice_dropdown.get()
                 if alert_sign != "<" and alert_sign != ">":
-                    print("Invalid is sign") #TO-DO: CALL TO ERROR SCREEN HERE
+                    message = "Please choose a value sign for the alert."
+                    show_error_screen(settings_gui, message)
                     return
                 try:
                     check = float(is_number.get())
                     if check < 0:
-                        print("Invalid is number") #TO-DO: CALL TO ERROR SCREEN HERE
+                        message = "Alert price must be a valid number greater than 0, please try again."
+                        show_error_screen(settings_gui, message)
                         return
                     alert_number = is_number.get()
-                except ValueError: #TO-DO: CALL TO ERROR SCREEN HERE
-                    print("Invalid Is number")
+                except ValueError:
+                    message = "Alert price must be a valid number greater than 0, please try again."
+                    show_error_screen(settings_gui, message)
                     return
             else:
-                print("Invalid alert") #TO-DO: CALL TO ERROR SCREEN HERE
+                message = "Please choose an alert type."
+                show_error_screen(settings_gui, message)
                 return
 
             if play_sound["background"] == "#000F46":
@@ -332,6 +340,34 @@ class ca_gui:
         #settings cancel button function
         def settings_cancel():
             settings_gui.destroy()
+        
+        def show_error_screen(settings_screen, message):
+            error_screen = tkinter.Toplevel(settings_screen)
+            error_screen.title("Error!")
+            error_screen.resizable(False, False)
+            error_screen.grab_set()
+
+            x = settings_screen.winfo_x()
+            y = settings_screen.winfo_y()
+            h = settings_screen.winfo_height()
+            w = settings_screen.winfo_width()
+            error_screen.geometry("%dx%d+%d+%d" % (w - 100, h - 150, x + 50, y + 75))
+            error_screen.config(bg = "azure", highlightbackground = "#000F46", highlightcolor = "#000F46", highlightthickness = 10)
+
+            #text elements
+            error_title = Label(error_screen, text = "Error", bg = '#000F46', fg = "white", width = 12,
+                        font = (None, 30)).place(x = 300, y = 40, anchor = "s")
+
+            error_message = Message(error_screen, bg = "azure", fg = "#000F46", width = 500, justify = "center", font = (None, 20))
+            error_message.place(x = 300, y = 250, anchor = "center")
+            error_message.config(text = message)
+
+            close_button = Button(error_screen, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
+                        text = "Close", relief = "raised", width = 10, font = (None, 25, "bold"), command = lambda: error_close())
+            close_button.place(x = 300, y = 500, anchor = "center")
+
+            def error_close():
+                error_screen.destroy()
 
     def show_history_screen(self):
 
@@ -406,13 +442,6 @@ class ca_gui:
         def alert_close():
             alert_screen.destroy()
 
-
-    def show_error_screen(self, message):
-        
-        def error_close():
-            return
-
-        return
 
 def set_alert_info(settings, gui):
         if settings.get_alert_type() == "Percent":
