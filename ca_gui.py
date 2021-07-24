@@ -316,7 +316,8 @@ class ca_gui:
                 if (check_email(test_email)):
                     email = email_address.get()
                 else:
-                    print("Invalid email") #TO-DO: CALL TO ERROR SCREEN HERE
+                    message = "Please enter a valid email, such as 'example@website.com'"
+                    show_error_screen(settings_gui, message)
                     return
             else:
                 is_email = "False"
