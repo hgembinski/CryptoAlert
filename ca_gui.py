@@ -54,7 +54,8 @@ class ca_gui:
         self.settings_button.place(x = 500, y = 650, anchor = "center")
 
         self.history_button = Button(self.master, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", 
-                    activeforeground = "antiquewhite1", text = "History", relief = "raised", width = 10, font = (None, 30, "bold"))
+                    activeforeground = "antiquewhite1", text = "History", relief = "raised", width = 10, font = (None, 30, "bold"),
+                    command = lambda: self.show_history_screen(master))
         self.history_button.place(x = 200, y = 650, anchor = "center")
 
         self.default_display()
@@ -363,6 +364,7 @@ class ca_gui:
             error_message.place(x = 300, y = 250, anchor = "center")
             error_message.config(text = message)
 
+            #buttons
             close_button = Button(error_screen, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
                         text = "Close", relief = "raised", width = 10, font = (None, 25, "bold"), command = lambda: error_close())
             close_button.place(x = 300, y = 500, anchor = "center")
@@ -370,10 +372,34 @@ class ca_gui:
             def error_close():
                 error_screen.destroy()
 
-    def show_history_screen(self):
+    def show_history_screen(self, master):
+        history_gui = tkinter.Toplevel(master)
+        history_gui.title("CryptoAlert History")
+        history_gui.resizable(False, False)
+        history_gui.grab_set()
+
+        x = master.winfo_x()
+        y = master.winfo_y()
+        h = master.winfo_height()
+        w = master.winfo_width()
+        history_gui.geometry("%dx%d+%d+%d" % (w, h, x, y))
+        history_gui.config(bg = "azure", highlightbackground = "#000F46", highlightcolor = "#000F46", highlightthickness = 10)
+
+        #title
+        title = Label(history_gui, text = "History", bg = '#000F46', fg = "white", width = 12,
+                    font = (None, 40)).place(x = 350, y = 50, anchor = "s")
+
+        #buttons
+        reset = Button(history_gui, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
+                text = "Reset", relief = "raised", width = 10, font = (None, 30, "bold"))
+        reset.place(x = 500, y = 650, anchor = "center")
+
+        back = Button(history_gui, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
+                    text = "Back", relief = "raised", width = 10, font = (None, 30, "bold"), command = lambda: history_back())
+        back.place(x = 200, y = 650, anchor = "center")
 
         def history_back():
-            return
+            history_gui.destroy()
         
         return
 
