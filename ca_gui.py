@@ -389,14 +389,39 @@ class ca_gui:
         title = Label(history_gui, text = "History", bg = '#000F46', fg = "white", width = 12,
                     font = (None, 40)).place(x = 350, y = 50, anchor = "s")
 
+        #table
+        table_frame = Frame(history_gui, highlightcolor = "#0042FF", highlightbackground = "#0042FF", highlightthickness = 12.5)
+        table_frame.place(x = 10, y = 60)
+
+        date_label = Label(table_frame, text = "Date", font = (None, 20, "bold"))
+        date_label.grid(row = 0, column = 0, padx = 15)
+
+        time_label = Label(table_frame, text = "Time", font = (None, 20, "bold"))
+        time_label.grid(row = 0, column = 1, padx = 15)
+
+        name_label = Label(table_frame, text = "Coin", font = (None, 20, "bold"))
+        name_label.grid(row = 0, column = 2, padx = 30)
+
+        price_label = Label(table_frame, text = "Price", font = (None, 20, "bold"))
+        price_label.grid(row = 0, column = 3, padx = 15)
+
+        email_sent_label = Label(table_frame, text = "Email Sent?", font = (None, 20, "bold"))
+        email_sent_label.grid(row = 0, column = 4, padx = 15)
+
+        for i in range(10):
+            for j in range(5):
+                info = Label(table_frame, height = 2, text = "-", font = (None, 14))
+                info.grid(row = 1 + i, column = j)
+
+
         #buttons
         reset = Button(history_gui, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
                 text = "Reset", relief = "raised", width = 10, font = (None, 30, "bold"))
-        reset.place(x = 500, y = 650, anchor = "center")
+        reset.place(x = 500, y = 675, anchor = "center")
 
         back = Button(history_gui, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
                     text = "Back", relief = "raised", width = 10, font = (None, 30, "bold"), command = lambda: history_back())
-        back.place(x = 200, y = 650, anchor = "center")
+        back.place(x = 200, y = 675, anchor = "center")
 
         def history_back():
             history_gui.destroy()
