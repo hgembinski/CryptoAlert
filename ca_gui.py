@@ -11,6 +11,7 @@ from ttkwidgets.autocomplete import AutocompleteCombobox
 import ca_helpers
 from ca_helpers import *
 from time import localtime, strftime
+from datetime import date
 
 class ca_gui:
     def __init__(self, master, settings):
@@ -325,9 +326,9 @@ class ca_gui:
                 email = "N/A"
 
             #save to file   
-            with open(settings_file, "w+") as f:
+            with open(settings_file, "w") as f:
                 f.write(str(coin) + "\n" + symbol + "\n" + url + "\n" + str(alert_type) + "\n" + str(alert_sign) 
-                + "\n" + str(alert_number) + "\n" +str(is_sound) + "\n" + str(is_email) + "\n" + str(email))
+                + "\n" + str(alert_number) + "\n" + str(is_sound) + "\n" + str(is_email) + "\n" + str(email))
 
             #set the settings object values accordingly
             settings.new_settings(coin, symbol, url, alert_type, alert_sign, alert_number, is_sound, is_email, email)
@@ -520,8 +521,16 @@ def set_alert_info(settings, gui):
 def set_ticker(root, settings, gui, current_price):
     gui.set_crypto(settings.get_symbol() + " - " + settings.get_coin())
     gui.set_font_size(5)
-    gui.set_price("$" + current_price)
-    root.update()
-    resize_font(root, gui.get_font(), gui.get_price_label())
+
+    print(current_price)
+    if current_price != "":
+        gui.set_price("$" + current_price)
+        root.update()
+        resize_font(root, gui.get_font(), gui.get_price_label())
+    
+    else:
+        gui.set_price("No price data")
+        gui.set_font_size(50)
+        gui.set_price_color("antiquewhite1")
 
         

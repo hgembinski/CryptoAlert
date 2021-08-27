@@ -13,5 +13,13 @@ def get_price(url):
     line = soup.find('div', {'class' : 'priceValue'}).text
 
     price = line[1:]
+
+    try:
+        test = float(price)
+
+        if test <= 0:
+            return ""
+    except:
+        return ""
     
     return price
