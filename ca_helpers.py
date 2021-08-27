@@ -34,6 +34,9 @@ def delete_file(file):
 
 #resize font to fit ticker frame
 def resize_font(root, current_font, label):
+    if label.cget("text") == "":
+        return
+
     font_size = current_font.cget("size")
     width = label.winfo_width()
 
