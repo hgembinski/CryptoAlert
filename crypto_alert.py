@@ -63,8 +63,8 @@ def crypto_alert():
                     if alert_check(settings, initial, current_price):
                         print("Alert!")
                         to_history('history.txt', '{month}/{day}/{year},{time},{symbol},${price},{email_sent}'.format(month = date.today().month, day = date.today().day,
-                            year = date.today().year, time = strftime("%H:%M:%S", localtime()), symbol = settings.get_symbol(), price = current_price,
-                            email_sent = settings.get_email_status()))
+                            year = date.today().year, time = strftime("%H:%M:%S", localtime()), symbol = settings.get_symbol(), 
+                            price = current_price.replace(",",""), email_sent = settings.get_email_status()))
                         gui.show_alert_screen(root, settings, initial)
                         
                         settings.blank_settings()
