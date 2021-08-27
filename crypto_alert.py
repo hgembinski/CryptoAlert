@@ -68,7 +68,7 @@ def crypto_alert():
                         gui.show_alert_screen(root, settings, initial)
                         
                         settings.blank_settings()
-                        delete_settings_file()
+                        delete_file(settings_file)
                         gui.default_display()
 
                     elif current_price != "":
