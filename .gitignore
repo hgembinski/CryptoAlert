@@ -3,4 +3,5 @@
 .__pycache__/*
 *.pyc
 *.txt
-config.config
+config.txt
+!example_config.txt

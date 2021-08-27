@@ -2,7 +2,8 @@
 **EMAIL PASSWORD**
 
 Instructions:
-Above, enter the username and password of the email account to send alerts WITH.
+Above, enter the username and password of the email account to send alerts WITH. 
+**IMPORTANT: Because this program uses the yagmail library, this must be a Gmail account!**
 The recipient email is entered by the user in the actual application.
 When ready to use, rename this file to "config.config" instead of "example_config.config"
 NOTE: In case of invalid email credentials, an email will simply not be sent, the rest of the application will work as normal.
