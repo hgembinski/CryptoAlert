@@ -15,7 +15,7 @@ def get_price(url):
     price = line[1:]
 
     try:
-        test = float(price)
+        test = float(price.replace(",",""))
 
         if test <= 0:
             return ""
