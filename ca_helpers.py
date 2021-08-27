@@ -50,29 +50,64 @@ def resize_font(root, current_font, label):
     
     label.config(fg = "antiquewhite1") #actually show the text once it's properly sized
 
+#returns true if current_price meets the criteria to fire an alert
 def alert_check(settings, initial_price, current_price):
-    price = float(current_price.replace(",",""))
+    if initial_price != "" and initial_price != "0":
+        price = float(current_price.replace(",",""))
 
-    if settings.get_alert_type() == "Percent":
-        initial = float(initial_price.replace(",",""))
-        percent = float(settings.get_alert_number()) / 100
-        bound = initial * percent
+        if settings.get_alert_type() == "Percent":
+            initial = float(initial_price.replace(",",""))
+            percent = float(settings.get_alert_number()) / 100
+            bound = initial * percent
 
-        if price >= (initial + bound) or price <= (initial - bound):
-            return True
-
-    elif settings.get_alert_type() == "Flat":
-        if settings.get_alert_sign() == "<":
-            if price < float(settings.get_alert_number().replace(",","")):
+            if price >= (initial + bound) or price <= (initial - bound):
                 return True
 
-        elif settings.get_alert_sign() == ">":
-            if price > float(settings.get_alert_number().replace(",","")):
-                return True
+        elif settings.get_alert_type() == "Flat":
+            if settings.get_alert_sign() == "<":
+                if price < float(settings.get_alert_number().replace(",","")):
+                    return True
 
-        return
+            elif settings.get_alert_sign() == ">":
+                if price > float(settings.get_alert_number().replace(",","")):
+                    return True
 
-    return False
+            return
+
+        return False
+
+#writes the alert info to top of history file, adjusting current entries as needed
+def to_history(file, entry):
+    if path.exists(file) and path.isfile(file): #if existing history file
+        with open(file, "r") as f:
+            history_array = [entry]
+            
+            for line in f:
+                history_array.append(line.strip())
+
+            while len(history_array) < 10:
+                history_array.append('-,-,-,-,-')  #fill lines with dashes if less than ten entries
+
+            while len(history_array) > 10:
+                history_array.pop() #remove the last entry if there is more than ten entries
+
+        with open(file, 'w') as f:
+            for line in history_array:
+                f.write(line + "\n")
+
+    else:
+        with open(file, "w") as f:
+            history_array = [entry]
+
+            while len(history_array) < 10:
+                history_array.append('-,-,-,-,-')
+            
+            for line in history_array:
+                f.write(line + "\n")
+
+
+
+
 
 def play_sound():
     Beep(440, 200)

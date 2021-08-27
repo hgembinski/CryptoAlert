@@ -50,43 +50,44 @@ def crypto_alert():
                 initial = current_price
                 settings.set_is_new(False)
                 counter = 61
+            
+            else:
+                if counter > 60:
+                    counter = 0
 
-            if counter > 60:
-                counter = 0
+                    if current_price != "" and last_price != current_price:
+                        last_price = current_price
 
-                if current_price != "" and last_price != current_price:
-                    last_price = current_price
+                    current_price = get_price(settings.get_url())
 
-                current_price = get_price(settings.get_url())
+                    if alert_check(settings, initial, current_price):
+                        print("Alert!")
+                        to_history('history.txt', '{month}/{day}/{year},{time},{symbol},${price},{email_sent}'.format(month = date.today().month, day = date.today().day,
+                            year = date.today().year, time = strftime("%H:%M:%S", localtime()), symbol = settings.get_symbol(), price = current_price,
+                            email_sent = settings.get_email_status()))
+                        gui.show_alert_screen(root, settings, initial)
+                        
+                        settings.blank_settings()
+                        delete_settings_file()
+                        gui.default_display()
 
-                if alert_check(settings, initial, current_price):
-                    gui.show_alert_screen(root, settings, initial)
-                    
-                    settings.print_settings()
-                    settings.blank_settings()
-                    delete_settings_file()
-                    gui.default_display()
-                    print("Alert!")
-                    print(current_price)
-                    print(initial)
-
-                else:
-                    if float(current_price.replace(",","")) > float(last_price.replace(",","")):
-                        gui.set_price_color("lime green")
-                    elif float(current_price.replace(",","")) < float(last_price.replace(",","")):
-                        gui.set_price_color("red")
-                    
-                    gui.set_price("$" + current_price)
-                    print("------------------------")
-                    print(counter2)
-                    print("Initial Price: " + initial)
-                    print("Current Price: " + current_price)
-                    print("Last Price: " + last_price)
-                    counter2 = counter2 + 1
-                    end = time.time()
-                    print("Elapsed time: " + str(end - start))
-                    start = time.time()
-                    end = 0
+                    elif current_price != "":
+                        if float(current_price.replace(",","")) > float(last_price.replace(",","")):
+                            gui.set_price_color("lime green")
+                        elif float(current_price.replace(",","")) < float(last_price.replace(",","")):
+                            gui.set_price_color("red")
+                        
+                        gui.set_price("$" + current_price)
+                        print("------------------------")
+                        print(counter2)
+                        print("Initial Price: " + initial)
+                        print("Current Price: " + current_price)
+                        print("Last Price: " + last_price)
+                        counter2 = counter2 + 1
+                        end = time.time()
+                        print("Elapsed time: " + str(end - start))
+                        start = time.time()
+                        end = 0
         root.after(500, update)
 
 
