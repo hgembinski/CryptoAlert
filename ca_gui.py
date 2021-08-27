@@ -374,6 +374,8 @@ class ca_gui:
                 error_screen.destroy()
 
     def show_history_screen(self, master):
+        history_file = "history.txt"
+
         history_gui = tkinter.Toplevel(master)
         history_gui.title("CryptoAlert History")
         history_gui.resizable(False, False)
@@ -391,8 +393,8 @@ class ca_gui:
                     font = (None, 40)).place(x = 350, y = 50, anchor = "s")
 
         #table
-        table_frame = Frame(history_gui, highlightcolor = "#0042FF", highlightbackground = "#0042FF", highlightthickness = 12.5)
-        table_frame.place(x = 10, y = 60)
+        table_frame = Frame(history_gui, highlightcolor = "#0042FF", highlightbackground = "#0042FF", highlightthickness = 8)
+        table_frame.place(x = 9, y = 55)
 
         date_label = Label(table_frame, text = "Date", font = (None, 20, "bold"))
         date_label.grid(row = 0, column = 0, padx = 15)
@@ -404,20 +406,34 @@ class ca_gui:
         name_label.grid(row = 0, column = 2, padx = 30)
 
         price_label = Label(table_frame, text = "Price", font = (None, 20, "bold"))
-        price_label.grid(row = 0, column = 3, padx = 15)
+        price_label.grid(row = 0, column = 3, padx = 25)
 
         email_sent_label = Label(table_frame, text = "Email Sent?", font = (None, 20, "bold"))
         email_sent_label.grid(row = 0, column = 4, padx = 15)
 
-        for i in range(10):
-            for j in range(5):
-                info = Label(table_frame, height = 2, text = "-", font = (None, 14))
-                info.grid(row = 1 + i, column = j)
 
+        def history_blank(): #fills history table with '-' for each value
+            for i in range(13):
+                for j in range(5):
+                    info = Label(table_frame, height = 2, text = "-", font = (None, 11))
+                    info.grid(row = 1 + i, column = j)
+        
+        table_data = {}
+
+        if path.exists(history_file) and path.isfile(history_file):
+            with open(history_file, 'r') as f:
+                for i in range(13):
+                    line = f.readline().strip().split(',')
+                    for j in range(5):
+                        info = Label(table_frame, height = 2, text = line[j], font = (None, 11))
+                        info.grid(row = 1 + i, column = j)
+                        table_data[(i, j)] = info
+        else:
+            history_blank()
 
         #buttons
         reset = Button(history_gui, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
-                text = "Reset", relief = "raised", width = 10, font = (None, 30, "bold"))
+                text = "Reset", relief = "raised", width = 10, font = (None, 30, "bold"), command = lambda: history_reset())
         reset.place(x = 500, y = 675, anchor = "center")
 
         back = Button(history_gui, bg = "#0042FF", activebackground = 'dodgerblue2', fg = "antiquewhite1", activeforeground = "antiquewhite1",
@@ -426,8 +442,13 @@ class ca_gui:
 
         def history_back():
             history_gui.destroy()
-        
-        return
+
+        def history_reset():
+            delete_file(history_file)
+            for i in range(13):
+                for j in range(5):
+                    table_data[i,j].config(text = "-")
+            master.update()
 
     def show_alert_screen(self, master, settings, initial):
         alert_screen = tkinter.Toplevel(master)
