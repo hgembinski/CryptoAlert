@@ -29,7 +29,8 @@ def check_email(email):
 
 #delete file
 def delete_file(file):
-    remove(file)
+    if path.exists(file) and path.isfile(file):
+        remove(file)
 
 #resize font to fit ticker frame
 def resize_font(root, current_font, label):
