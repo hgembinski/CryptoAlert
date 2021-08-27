@@ -27,9 +27,9 @@ def check_email(email):
 
     return False
 
-#delete settings file
-def delete_settings_file():
-    remove("settings.txt")
+#delete file
+def delete_file(file):
+    remove(file)
 
 #resize font to fit ticker frame
 def resize_font(root, current_font, label):
