@@ -547,7 +547,6 @@ def set_ticker(root, settings, gui, current_price):
     gui.set_crypto(settings.get_symbol() + ' - ' + settings.get_coin())
     gui.set_font_size(5)
 
-    print(current_price)
     if current_price != '':
         gui.set_price('$' + current_price)
         root.update()
