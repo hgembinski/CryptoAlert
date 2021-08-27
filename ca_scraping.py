@@ -10,7 +10,7 @@ def get_price(url):
     price = 0
     coinmarketcap = requests.get(url)
     soup = BeautifulSoup(coinmarketcap.content, 'html.parser')
-    line = soup.find('div', {'priceValue___11gHJ'}).text
+    line = soup.find('div', {'class' : 'priceValue'}).text
 
     price = line[1:]
     
