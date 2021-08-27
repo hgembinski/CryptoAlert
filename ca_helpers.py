@@ -42,12 +42,12 @@ def resize_font(root, current_font, label):
 
     label.config(fg = label.cget("bg"))
 
-    if width > 415:
+    if width > 400:
         current_font.configure(size = font_size - 1)
         root.update()
         resize_font(root, current_font, label)
 
-    if width < 400:
+    if width < 370:
         current_font.configure(size = font_size + 1)
         root.update()
         resize_font(root, current_font, label)
