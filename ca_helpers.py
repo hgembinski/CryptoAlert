@@ -1,12 +1,15 @@
 #Haiden Gembinski
 #Helper functions for crypto alert
-#(Mostly for handling files and input verification)
 
 import re
 from os import path, remove
 import pandas as pd
+import yagmail
 import winsound
 from winsound import *
+
+import ca_settings
+import sys
 
 #convert csv file to dict with name column as key
 def csv_to_dict(file):
@@ -26,6 +29,38 @@ def check_email(email):
         return True
 
     return False
+
+#send email
+def send_email(settings, price, initial):
+    try:
+        if path.exists("config.txt") and path.isfile("config.txt"):
+            with open("config.txt", "r") as f:
+                username = f.readline().strip()
+                password = f.readline().strip()
+                alert = ""
+
+                if settings.get_alert_type() == 'Percent':
+                    phrase = 'Price changed by ' + settings.get_alert_number() + '%' + ' from $' + str(initial)
+                    alert = phrase + "\nPrice at alert time was: $" + price
+                elif settings.get_alert_type() == 'Flat':
+                    phrase = ''
+                    if settings.get_alert_sign() == '>':
+                        phrase = 'greater than $'
+                    elif settings.get_alert_sign() == '<':
+                        phrase = 'less than $'
+                    alert = 'Price was ' + phrase + settings.get_alert_number() + "\nPrice at alert time was: $" + price
+                
+                message = "Hello! Your CryptoAlert has activated for " + settings.get_symbol() + " - " + settings.get_coin() +"\n" + alert
+                reciever = settings.get_email()
+                
+                #yagmail to send email
+                yag = yagmail.SMTP(username, password)
+                yag.send(to = reciever, subject = "CryptoAlert for "+ settings.get_symbol() + " - " + settings.get_coin() + "!",
+                        contents = message)
+                
+    
+    except:
+        return
 
 #delete file
 def delete_file(file):

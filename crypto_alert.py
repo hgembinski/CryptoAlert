@@ -34,7 +34,6 @@ def crypto_alert():
     test_timeout = 5
 
     try:
-        print("ping")
         test_request = requests.get(test_url, timeout = test_timeout)
 
         if settings.get_coin() != "":
@@ -57,15 +56,12 @@ def crypto_alert():
         test_timeout = 5
 
         try:
-            print("ping")
             test_request = requests.get(test_url, timeout = test_timeout)
             connected = True
         except:
-            print("No connection")
             gui.set_crypto('No internet connection!')
 
         if connected:
-            print("ping success")
 
             if start == "":
                 start = time.time()
@@ -94,6 +90,10 @@ def crypto_alert():
                             to_history('history.txt', '{month}/{day}/{year},{time},{symbol},${price},{email_sent}'.format(month = date.today().month, day = date.today().day,
                                 year = date.today().year, time = strftime("%H:%M:%S", localtime()), symbol = settings.get_symbol(), 
                                 price = current_price.replace(",",""), email_sent = settings.get_email_status()))
+
+                            if settings.get_email_status() == "True":
+                                send_email(settings, current_price, initial)
+
                             gui.show_alert_screen(root, settings, initial)
                             
                             settings.blank_settings()
