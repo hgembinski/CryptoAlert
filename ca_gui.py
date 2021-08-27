@@ -107,8 +107,12 @@ class ca_gui:
         for key in coin_dict.keys():
             coin_list.append(coin_dict[key][0] + ' - ' + key)
         
-        if settings.get_coin() != '': #for displaying coin in combobox entry field
+        if list(coin_dict.keys())[0] == 'Update to load list of coins!':
+            coin_name = 'Update to load list of coins!'
+
+        elif settings.get_coin() != '': #for displaying coin in combobox entry field
             coin_name = settings.get_symbol() + ' - ' + settings.get_coin()
+            
         else:
             coin_name = ''
 
