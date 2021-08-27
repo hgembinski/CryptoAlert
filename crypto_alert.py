@@ -28,7 +28,7 @@ def crypto_alert():
     counter = 0
     counter2 = 0
     start = ""
-    
+
     #check for internet connection
     test_url = "http://www.google.com"
     test_timeout = 5
@@ -80,7 +80,7 @@ def crypto_alert():
                     counter = 61
                 
                 else:
-                    gui.set_crypto(settings.get_symbol() + "-" + settings.get_coin())
+                    gui.set_crypto(settings.get_symbol() + " - " + settings.get_coin())
                     if counter > 60:
                         counter = 0
 
