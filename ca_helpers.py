@@ -85,10 +85,10 @@ def to_history(file, entry):
             for line in f:
                 history_array.append(line.strip())
 
-            while len(history_array) < 10:
+            while len(history_array) < 13:
                 history_array.append('-,-,-,-,-')  #fill lines with dashes if less than ten entries
 
-            while len(history_array) > 10:
+            while len(history_array) > 13:
                 history_array.pop() #remove the last entry if there is more than ten entries
 
         with open(file, 'w') as f:
@@ -99,7 +99,7 @@ def to_history(file, entry):
         with open(file, "w") as f:
             history_array = [entry]
 
-            while len(history_array) < 10:
+            while len(history_array) < 13:
                 history_array.append('-,-,-,-,-')
             
             for line in history_array:
