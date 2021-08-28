@@ -98,6 +98,9 @@ def crypto_alert():
                                 gui.set_price_color("red")
                             
                             gui.set_price("$" + current_price)
+
+            else:
+                gui.set_crypto("No Coin Selected")
         root.after(500, update)
 
 
