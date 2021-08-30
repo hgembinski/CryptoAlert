@@ -8,10 +8,13 @@ from tkinter import font
 import tkinter.font
 from tkinter import ttk
 from ttkwidgets.autocomplete import AutocompleteCombobox
-import ca_helpers
-from ca_helpers import *
 from time import localtime, strftime
 from datetime import date
+
+import ca_helpers
+from ca_helpers import *
+import ca_scraping
+from ca_scraping import *
 
 class ca_gui:
     def __init__(self, master, settings):
@@ -144,8 +147,12 @@ class ca_gui:
 
         #update button
         update = Button(settings_gui, bg = '#004ac2', activebackground = 'dodgerblue2', fg = 'antiquewhite1', activeforeground = 'antiquewhite1',
-                    text = 'Update', relief = 'raised', width = 6, font = (None, 15, 'bold'))
+                    text = 'Update', relief = 'raised', width = 6, font = (None, 15, 'bold'), command = lambda: update_button())
         update.place(x = 600, y = 125, anchor = 'center')
+
+        #update button function
+        def update_button():
+            scrape_crypto_names()
 
         #alert options
         alert_price_text = Label(settings_gui, text = 'When the price...', bg = 'white', fg = '#000F46',
@@ -348,7 +355,9 @@ class ca_gui:
         def settings_cancel():
             settings_gui.destroy()
         
+        #error screen popup
         def show_error_screen(settings_screen, message):
+            #gui
             error_screen = tkinter.Toplevel(settings_screen)
             error_screen.title('Error!')
             error_screen.resizable(False, False)
@@ -378,8 +387,9 @@ class ca_gui:
                 error_screen.destroy()
 
     def show_history_screen(self, master):
-        history_file = 'history.txt'
+        history_file = 'history.txt' #file to read history data from
 
+        #gui
         history_gui = tkinter.Toplevel(master)
         history_gui.title('CryptoAlert History')
         history_gui.resizable(False, False)
