@@ -57,8 +57,7 @@ def send_email(settings, price, initial):
                 yag = yagmail.SMTP(username, password)
                 yag.send(to = reciever, subject = "CryptoAlert for "+ settings.get_symbol() + " - " + settings.get_coin() + "!",
                         contents = message)
-                
-    
+
     except:
         return
 
@@ -77,12 +76,12 @@ def resize_font(root, current_font, label):
 
     label.config(fg = label.cget("bg"))
 
-    if width > 400:
+    if width > 400: #recursively size down if too big
         current_font.configure(size = font_size - 1)
         root.update()
         resize_font(root, current_font, label)
 
-    if width < 370:
+    if width < 370: #recursively size up if too small
         current_font.configure(size = font_size + 1)
         root.update()
         resize_font(root, current_font, label)
@@ -144,10 +143,7 @@ def to_history(file, entry):
             for line in history_array:
                 f.write(line + "\n")
 
-
-
-
-
+#alert sound
 def play_sound():
     Beep(440, 200)
     Beep(440, 100)
