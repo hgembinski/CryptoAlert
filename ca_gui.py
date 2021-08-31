@@ -147,12 +147,8 @@ class ca_gui:
 
         #update button
         update = Button(settings_gui, bg = '#004ac2', activebackground = 'dodgerblue2', fg = 'antiquewhite1', activeforeground = 'antiquewhite1',
-                    text = 'Update', relief = 'raised', width = 6, font = (None, 15, 'bold'), command = lambda: update_button())
+                    text = 'Update', relief = 'raised', width = 6, font = (None, 15, 'bold'), command = lambda: self.update_screen(master, cryptos))
         update.place(x = 600, y = 125, anchor = 'center')
-
-        #update button function
-        def update_button():
-            scrape_crypto_names()
 
         #alert options
         alert_price_text = Label(settings_gui, text = 'When the price...', bg = 'white', fg = '#000F46',
@@ -274,7 +270,6 @@ class ca_gui:
                 symbol = coin_dict[name[1]][0]
                 url = coin_dict[name[1]][1]
             else:
-                print('Invalid coin')
                 message = 'Invalid coin, please try again.'
                 show_error_screen(settings_gui, message)
                 return
@@ -529,6 +524,61 @@ class ca_gui:
 
         def alert_close():
             alert_screen.destroy()
+
+    def update_screen(self, settings_screen, cryptos):
+        #gui
+        update_screen = tkinter.Toplevel(settings_screen)
+        update_screen.title('Update')
+        update_screen.resizable(False, False)
+        update_screen.grab_set()
+
+        x = settings_screen.winfo_x()
+        y = settings_screen.winfo_y()
+        h = settings_screen.winfo_height()
+        w = settings_screen.winfo_width()
+        update_screen.geometry('%dx%d+%d+%d' % (w - 100, h - 150, x + 50, y + 75))
+        update_screen.config(bg = 'white', highlightbackground = '#000F46', highlightcolor = '#000F46', highlightthickness = 10)
+
+        #text elements
+        update_title = Label(update_screen, text = 'Update Coin List', bg = '#000F46', fg = 'white', width = 15,
+                        font = (None, 30)).place(x = 300, y = 40, anchor = 's')
+
+        update_status = Label(update_screen, bg = 'white', fg = '#000F46', justify = 'center', 
+                        font = (None, 25, "bold"), text = "Idle")
+        update_status.place(x = 300, y = 150, anchor = 'center')
+
+        update_message = Message(update_screen, bg = 'white', fg = '#000F46', width = 500, justify = 'center', 
+                        font = (None, 20), text = "Click Go to begin updating the list of available coins!")
+        update_message.place(x = 300, y = 250, anchor = 'center')
+
+        update_warning = Message(update_screen, bg = 'white', fg = '#000F46', width = 350, justify = 'center', 
+                        font = (None, 20, "italic"), text = "Note: The process cannot be interrupted once begun.")
+        update_warning.place(x = 300, y = 400, anchor = 'center')
+
+        #buttons
+        go_button = Button(update_screen, bg = 'green', activebackground = 'green', fg = 'antiquewhite1', activeforeground = 'antiquewhite1',
+                        text = 'Go', relief = 'raised', width = 10, font = (None, 25, 'bold'), command = lambda: update_button(cryptos))
+        go_button.place(x = 425, y = 500, anchor = 'center')
+
+        close_button = Button(update_screen, bg = '#004ac2', activebackground = 'dodgerblue2', fg = 'antiquewhite1', activeforeground = 'antiquewhite1',
+                        text = 'Close', relief = 'raised', width = 10, font = (None, 25, 'bold'), command = lambda: close_update())
+        close_button.place(x = 175, y = 500, anchor = 'center')
+
+        #go button function
+        def update_button(cryptos):
+            scrape_crypto_names(update_screen, update_status, update_message, go_button, close_button)
+
+            #refresh the dropdown list
+            csv_file = 'cryptos.csv'
+            coin_dict = csv_to_dict(csv_file)
+            coin_list = []
+            for key in coin_dict.keys():
+                coin_list.append(coin_dict[key][0] + ' - ' + key)
+
+            cryptos.config(completevalues = coin_list)
+        #cancel button function
+        def close_update():
+            update_screen.destroy()
 
 
 def set_alert_info(settings, gui):

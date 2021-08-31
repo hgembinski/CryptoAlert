@@ -31,8 +31,12 @@ def get_price(url):
     return price
 
 #scrapes a list of all available cryptocurrencies on coinmarketcap.com, then outputs name/symbol/url of each one to a csv
-def scrape_crypto_names():
-    print("Starting scrape...")
+def scrape_crypto_names(update_screen, update_status, update_message, go_button, close_button):
+    go_button.config(bg = "light grey", state = "disabled")
+    close_button.config(bg = "light grey", state = "disabled")
+    update_status.config(text = "Working on it...")
+    update_message.config(text = "Starting up...")
+    update_screen.update()
 
     headers = {"user-agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36"}
     cryptos = {} #dictionary of coins
@@ -47,9 +51,9 @@ def scrape_crypto_names():
 
         #scrape data from pages
         for i in range (1, pages + 1):
-
             time.sleep(0.5 + float(random.randrange(0, 1) / 2)) #wait 0.5s + random amount between 0-0.5s to avoid server timeout
-            print("Scraping page " + str(i) + " of " + str(pages) + "...")
+            update_message.config(text = "Scraping page " + str(i) + " of " + str(pages) + "...")
+            update_screen.update()
 
             url = 'https://coinmarketcap.com/?page=' + str(i) #generate the page url
             site = requests.get(url, headers = headers, timeout = 5)
@@ -66,15 +70,19 @@ def scrape_crypto_names():
         #create new dictionary ordered by name
         for key in sorted(cryptos):
             sorted_cryptos[key] = cryptos[key]
-
         #print to file
         print_to_csv(sorted_cryptos, file)
 
-        print("Done!")
+        update_status.config(text = "Done!")
+        update_message.config(text = "Coin list has been updated successfully!")
+        go_button.config(bg = "green", state = "normal")
+        close_button.config(bg = "#004ac2", state = "normal")
     
     except Exception as e:
-        print("Oops")
-        print(e)
+        update_status.config(text = "Oops!")
+        update_message.config(text = "Something went wrong. The update task could not be completed, possibly due to an issue with the site. Please try again later.")
+        go_button.config(bg = "green", state = "normal")
+        close_button.config(bg = "#004ac2", state = "normal")
         return
 
 #calculates the number of pages in the table of cryptos from the "Showing 1 - X out of Y" text
