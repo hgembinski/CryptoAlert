@@ -5,8 +5,14 @@ Utilizes BeautifulSoup, Pandas, and Tkinter.
 
 ## Instructions ##
 ### First Time Setup ###
+The only set-up required by the user is the creation of a "config.txt" file and internal creation of a "cryptos.csv" file. Refer to the "example_config.txt" file for instructions on how to create a simple config text file. However, the program <i>can</i> run without this initial set up, it will just not be able to send alert emails.
+
+Upon first-time use, the user will have to update/create the list of cryptocurrencies used by the program. This is as simple as clicking the "update" button on the settings screen.
 
 ### Using CryptoAlert ###
+Using CryptoAlert is a fairly simple process. Simply navigate to settings to choose a cryptocurrency to track and set the parameters for your alert. CryptoAlert handles the rest!
+
+A rolling log of past alerts can also be viewed by clicking the "history" button on the main page.
 
 ## Screenshots ##
 <table>
@@ -61,6 +67,7 @@ Utilizes BeautifulSoup, Pandas, and Tkinter.
  </table>
  
 ## Moving Forward ##
+- Creation of proper testing suite
 - Further testing and implementation of more specific exception handling
 - Implement prompt for "sender" email info, without suer having to edit config.txt
 - Allow user to interrupt updating the coin list (threading)
